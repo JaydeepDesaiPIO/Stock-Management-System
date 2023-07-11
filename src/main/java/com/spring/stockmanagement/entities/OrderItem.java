@@ -14,7 +14,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private orders orders;
+    private Orders orders;
 
     private long quantity;
 
@@ -27,7 +27,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Product product, com.spring.stockmanagement.entities.orders orders, long quantity, double price, double totalPrice) {
+    public OrderItem(Product product, Orders orders, long quantity, double price, double totalPrice) {
         this.product = product;
         this.orders = orders;
         this.quantity = quantity;
@@ -52,11 +52,11 @@ public class OrderItem {
         this.product = product;
     }
 
-    public com.spring.stockmanagement.entities.orders getOrders() {
+    public Orders getOrders() {
         return orders;
     }
 
-    public void setOrders(com.spring.stockmanagement.entities.orders orders) {
+    public void setOrders(Orders orders) {
         this.orders = orders;
     }
 

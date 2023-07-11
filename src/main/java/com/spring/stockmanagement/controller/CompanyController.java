@@ -20,10 +20,8 @@ public class CompanyController {
     private ProductService productService;
 
     @GetMapping("/products/add")
-    public String addProduct(Model model, Principal principal)
+    public String addProduct(Model model)
     {
-        String User=principal.getName();
-
         Product product=new Product();
         model.addAttribute("product",product);
         return "company/add";

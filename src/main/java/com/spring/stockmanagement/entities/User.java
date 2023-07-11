@@ -1,11 +1,20 @@
 package com.spring.stockmanagement.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.spring.stockmanagement.Enum.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GeneratorType;
+import org.springframework.jca.cci.object.SimpleRecordOperation;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -22,14 +31,14 @@ public class User {
 
     private Long contact;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private String address;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
     private Company company;
-
 
     public String toString() {
         return "User{" +
@@ -45,18 +54,18 @@ public class User {
     }
 
     //constructor
-    public User() {
-    }
-
-    public User(String name, String email, String password, Long contact, String role, String address, Company company) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.contact = contact;
-        this.role = role;
-        this.address = address;
-        this.company = company;
-    }
+//    public User() {
+//    }
+//
+//    public User(String name, String email, String password, Long contact, String role, String address, Company company) {
+//        this.name = name;
+//        this.email = email;
+//        this.password = password;
+//        this.contact = contact;
+//        this.role = role;
+//        this.address = address;
+//        this.company = company;
+//    }
     //getter setter
 
     public int getId() {
@@ -97,14 +106,6 @@ public class User {
 
     public void setContact(Long contact) {
         this.contact = contact;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getAddress() {

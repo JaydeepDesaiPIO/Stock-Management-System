@@ -1,5 +1,9 @@
 package com.spring.stockmanagement.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +14,9 @@ import java.util.List;
         uniqueConstraints =
         @UniqueConstraint(name = "name_unique", columnNames = "company_name")
 )
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Company {
 
     @Id
@@ -18,9 +25,9 @@ public class Company {
     private int id;
 
     @Column(name = "company_name")
-    private String name;
+    private String companyName;
 
-    private String address;
+    private String companyAddress;
 
     private long contactNo;
 
@@ -31,18 +38,20 @@ public class Company {
     private List<Product> product;
 
     //constructor
-    public Company() {
-    }
-
-    public Company(String name, String address, long contactNo, List<User> user, List<Product> product) {
-        this.name = name;
-        this.address = address;
-        this.contactNo = contactNo;
-        this.user = user;
-        this.product = product;
-    }
+//    public Company() {
+//    }
+//
+//    public Company(String name, String address, long contactNo, List<User> user, List<Product> product) {
+//        this.name = name;
+//        this.address = address;
+//        this.contactNo = contactNo;
+//        this.user = user;
+//        this.product = product;
+//    }
 
     //getter setter
+
+
     public int getId() {
         return id;
     }
@@ -51,20 +60,20 @@ public class Company {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCompanyAddress() {
+        return companyAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
     }
 
     public long getContactNo() {
@@ -90,6 +99,4 @@ public class Company {
     public void setProduct(List<Product> product) {
         this.product = product;
     }
-
-
 }

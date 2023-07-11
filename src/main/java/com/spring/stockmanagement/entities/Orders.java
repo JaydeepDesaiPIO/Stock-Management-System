@@ -1,14 +1,18 @@
 package com.spring.stockmanagement.entities;
 
-import com.sun.istack.NotNull;
+import com.spring.stockmanagement.Enum.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
-public class orders {
+@Table(name = "Orders")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Orders {
 
     @Id
     @Column(name = "order_id")
@@ -19,7 +23,8 @@ public class orders {
 
     private Date orderDate;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @OneToOne
     private User user;
@@ -27,18 +32,6 @@ public class orders {
     @OneToMany(mappedBy = "orders")
     private List<OrderItem> orderItems;
 
-    //constructor
-
-    public orders() {
-    }
-
-    public orders(String orderNumber, Date orderDate, String status, User user, List<OrderItem> orderItems) {
-        this.orderNumber = orderNumber;
-        this.orderDate = orderDate;
-        this.status = status;
-        this.user = user;
-        this.orderItems = orderItems;
-    }
 //getter setter
 
     public int getId() {
@@ -63,14 +56,6 @@ public class orders {
 
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public User getUser() {
