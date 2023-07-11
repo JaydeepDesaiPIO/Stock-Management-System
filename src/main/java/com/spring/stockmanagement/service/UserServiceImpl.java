@@ -6,6 +6,7 @@ import com.spring.stockmanagement.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -19,7 +20,6 @@ public class UserServiceImpl implements UserService {
         User user=new User();
         user.setName("jaydeep");
         user.setAddress("pune");
-        user.setAadharNumber(34567890);
         user.setEmail("jai@mail.com");
         user.setPassword("uygvsbnmdkeiu");
         userRepository.save(user);
@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
     public User update(User user, int id) {
         User existingUser=userRepository.findById(id).get();
         existingUser.setAddress(user.getAddress());
-        existingUser.setAadharNumber(user.getAadharNumber());
        return userRepository.save(existingUser);
     }
 }

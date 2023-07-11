@@ -20,7 +20,6 @@
                     <th>User ID</th>
                     <th>User Name</th>
                     <th>Email</th>
-                    <th>Aadhar No.</th>
                     <th>Address</th>
                 </tr>
             </thead>
@@ -30,7 +29,6 @@
                     <td th:text = "${user.id}"></td>
                     <td th:text = "${user.name}"></td>
                     <td th:text = "${user.email}"></td>
-                    <td th:text = "${user.aadharNumber}"></td>
                     <td th:text = "${user.address}"></td>
                     <td>
                         <a th:href = "@{/admin/users/edit/{id}(id=${user.id})}"

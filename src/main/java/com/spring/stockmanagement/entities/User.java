@@ -20,29 +20,44 @@ public class User {
 
     private String password;
 
-    private long aadharNumber;
+    private Long contact;
 
     private String role;
 
     private String address;
 
-    @OneToMany(mappedBy = "user")
-    private List<Company> company;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
-    @Override
+
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", aadharNumber=" + aadharNumber +
+                ", contact=" + contact +
                 ", role='" + role + '\'' +
                 ", address='" + address + '\'' +
                 ", company=" + company +
                 '}';
     }
 
+    //constructor
+    public User() {
+    }
+
+    public User(String name, String email, String password, Long contact, String role, String address, Company company) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.contact = contact;
+        this.role = role;
+        this.address = address;
+        this.company = company;
+    }
+    //getter setter
 
     public int getId() {
         return id;
@@ -76,12 +91,12 @@ public class User {
         this.password = password;
     }
 
-    public long getAadharNumber() {
-        return aadharNumber;
+    public Long getContact() {
+        return contact;
     }
 
-    public void setAadharNumber(long aadharNumber) {
-        this.aadharNumber = aadharNumber;
+    public void setContact(Long contact) {
+        this.contact = contact;
     }
 
     public String getRole() {
@@ -100,11 +115,11 @@ public class User {
         this.address = address;
     }
 
-    public List<Company> getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(List<Company> company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 }
