@@ -60,6 +60,15 @@
                                th:field="*{address}"
                         >
                     </div>
+                    <div class="form-group mb-3">
+                        <label th:for="role"> Select Role</label>
+                        <select name="roles" th:field="*{role}">
+                            <option th:each="role : ${roles}"
+                                    th:text="${role}"
+                                    th:value="${role}">
+                            </option>
+                        </select>
+                    </div>
                 </div>
                     <div th:object="${company}">
                         <div class="form-group mb-3">

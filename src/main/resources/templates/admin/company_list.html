@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>Companies</title>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <h1>List of Company</h1>
+  </div>
+  <table class="table table-bordered">
+    <thead class="table-primary">
+    <tr>
+      <th>Company ID</th>
+      <th>Company Name</th>
+      <th>Address</th>
+      <th>Contact</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each = "company: ${companies}">
+      <td th:text = "${company.id}"></td>
+      <td th:text = "${company.companyName}"></td>
+      <td th:text = "${company.companyAddress}"></td>
+      <td th:text = "${company.contactNo}"></td>
+      <td>
+<!--        <a th:href = "@{/admin/users/edit/{id}(id=${user.id})}"-->
+<!--           class = "btn btn-primary">Update</a>-->
+
+        <!--                        <a th:href = "@{/admin/books/{id}(id=${book.id})}"-->
+        <!--                           class = "btn btn-danger">Delete</a>-->
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

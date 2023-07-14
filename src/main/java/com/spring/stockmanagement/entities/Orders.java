@@ -2,6 +2,7 @@ package com.spring.stockmanagement.entities;
 
 import com.spring.stockmanagement.Enum.OrderStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @Table(name = "Orders")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Orders {
 
     @Id

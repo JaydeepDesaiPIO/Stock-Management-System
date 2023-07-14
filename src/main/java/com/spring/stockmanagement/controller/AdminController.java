@@ -2,6 +2,7 @@ package com.spring.stockmanagement.controller;
 
 
 import com.spring.stockmanagement.entities.User;
+import com.spring.stockmanagement.service.Interface.CompanyService;
 import com.spring.stockmanagement.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,14 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CompanyService companyService;
+
     @GetMapping("/users")
     public String allUsers(Model model)
     {
         model.addAttribute("users",userService.getAllUsers());
-        return "admin/userList.html";
+        return "admin/user_list.html";
     }
 
     @GetMapping("/users/edit/{id}")
@@ -38,4 +42,10 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    @GetMapping("/companies")
+    public String listOfCompany(Model model)
+    {
+        model.addAttribute("companies",companyService.getAllCompany());
+        return "admin/company_list";
+    }
 }

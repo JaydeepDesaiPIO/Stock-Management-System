@@ -1,8 +1,15 @@
 package com.spring.stockmanagement.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem {
 
     @Id
@@ -22,18 +29,7 @@ public class OrderItem {
 
     private double totalPrice;
 
-    //constructor
 
-    public OrderItem() {
-    }
-
-    public OrderItem(Product product, Orders orders, long quantity, double price, double totalPrice) {
-        this.product = product;
-        this.orders = orders;
-        this.quantity = quantity;
-        this.price = price;
-        this.totalPrice = totalPrice;
-    }
 //getter setter
 
     public int getId() {
