@@ -35,39 +35,43 @@
             <div class="form-group mb-3">
               <label for="email_feild">User Email</label>
               <input type="email" class="form-control" id="email_feild" placeholder="email"
-                     th:field="*{email}"
+                     th:field="*{email}"  th:errorClass="is-invalid"
               >
-                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error">
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback">
                 </p>
             </div>
 
             <div class="form-group mb-3">
               <label for="username_feild">User Name</label>
               <input type="text" class="form-control" id="username_feild" placeholder="username"
-                     th:field="*{name}" required autofocus="autofocus"
+                     th:field="*{name}"
+                     th:errorClass="is-invalid"
               >
-                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></p>
             </div>
 
             <div class="form-group mb-3">
               <label for="password_feild">Password</label>
-              <input type="password" class="form-control" id="password_feild" placeholder="password"
-                     th:field="*{password}" required autofocus="autofocus"
+              <input type="text" class="form-control" id="password_feild" placeholder="password"
+                     th:field="*{password}" th:errorClass="is-invalid"
               >
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></p>
             </div>
 
             <div class="form-group mb-3">
               <label for="contact_feild">Contact</label>
               <input type="number" class="form-control" id="contact_feild" placeholder="contact"
-                     th:field="*{contact}" required autofocus="autofocus"
+                     th:field="*{contact}" th:errorClass="is-invalid"
               >
+                <p th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}" class="invalid-feedback"></p>
             </div>
 
             <div class="form-group mb-3">
               <label for="address_feild">Address</label>
               <input type="text" class="form-control" id="address_feild" placeholder="Address"
-                     th:field="*{address}"
+                     th:field="*{address}" th:errorClass="is-invalid"
               >
+                <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="invalid-feedback"></p>
             </div>
             <div class="form-group mb-3">
                 <label th:for="role"> Select Role</label>

@@ -9,9 +9,7 @@ import org.hibernate.annotations.GeneratorType;
 import org.springframework.jca.cci.object.SimpleRecordOperation;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -27,10 +25,8 @@ public class User {
 
     @Column(name = "user_name")
     @Size(min = 4, message = "Atleast 4 characters")
-    @NotEmpty(message = "Username cannot be empty")
     private String name;
 
-    @NotEmpty(message = "Email can not be empty")
     private String email;
 
     private String password;
