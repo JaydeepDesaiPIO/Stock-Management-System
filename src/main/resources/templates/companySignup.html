@@ -24,72 +24,31 @@
 
                 <h1 class="text-center mb-3">Company Registration</h1>
 
-                <form action="" th:action="@{/home/company/register}" method="post">
-                <div th:object = "${user}">
-                    <div class="form-group mb-3">
-                        <label for="email_feild">StockHolder Email</label>
-                        <input type="email" class="form-control" id="email_feild" placeholder="email"
-                               th:field="*{email}" required autofocus="autofocus"
-                        >
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="username_feild">StockHolder Name</label>
-                        <input type="text" class="form-control" id="username_feild" placeholder="username"
-                               th:field="*{name}" required autofocus="autofocus"
-                        >
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="password_feild">Password</label>
-                        <input type="password" class="form-control" id="password_feild" placeholder="password"
-                               th:field="*{password}" required autofocus="autofocus"
-                        >
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="contact_feild">Contact No.</label>
-                        <input type="number" class="form-control" id="contact_feild" placeholder="contact"
-                               th:field="*{contact}" required autofocus="autofocus"
-                        >
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="address_feild">StockHolder Address</label>
-                        <input type="text" class="form-control" id="address_feild" placeholder="Company address"
-                               th:field="*{address}"
-                        >
-                    </div>
-                    <div class="form-group mb-3">
-                        <label th:for="role"> Select Role</label>
-                        <select name="roles" th:field="*{role}">
-                            <option th:each="role : ${roles}"
-                                    th:text="${role}"
-                                    th:value="${role}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                    <div th:object="${company}">
+                <form action="" th:action="@{/company/register}" th:object="${company}" method="post">
                         <div class="form-group mb-3">
                             <label for="companyName">Company Name</label>
                             <input type="text" class="form-control" id="companyName" placeholder="Company name"
                                    th:field="*{companyName}"
+                                   th:errorClass="is-invalid"
                             >
+                            <p th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}" class="invalid-feedback"></p>
                         </div>
                         <div class="form-group mb-3">
                             <label for="companyAddress">Company Add</label>
                             <input type="text" class="form-control" id="companyAddress" placeholder="Company address"
                                    th:field="*{companyAddress}"
+                                   th:errorClass="is-invalid"
                             >
+                            <p th:if="${#fields.hasErrors('companyAddress')}" th:errors="*{companyAddress}" class="invalid-feedback"></p>
                         </div>
                         <div class="form-group mb-3">
                             <label for="companyContact">Company Name</label>
                             <input type="number" class="form-control" id="companyContact" placeholder="Contact No."
                                    th:field="*{contactNo}"
+                                   th:errorClass="is-invalid"
                             >
+                            <p th:if="${#fields.hasErrors('contactNo')}" th:errors="*{contactNo}" class="invalid-feedback"></p>
                         </div>
-                    </div>
 
                     <div class="container text-center">
                         <button type="submit" class="btn btn-success">Submit</button>

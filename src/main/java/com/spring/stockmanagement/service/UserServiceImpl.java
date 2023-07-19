@@ -4,6 +4,7 @@ import com.spring.stockmanagement.entities.User;
 import com.spring.stockmanagement.repositories.UserRepository;
 import com.spring.stockmanagement.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -17,14 +18,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
-    public void addUser() {
-        User user=new User();
-        user.setName("jaydeep");
-        user.setAddress("pune");
-        user.setEmail("jai@mail.com");
-        user.setPassword("uygvsbnmdkeiu");
-        userRepository.save(user);
+    public User addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return  userRepository.save(user);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public User update(User user, int id) {
         User existingUser=userRepository.findById(id).get();
         existingUser.setAddress(user.getAddress());
-       return userRepository.save(existingUser);
+        return userRepository.save(existingUser);
     }
 
     @Override

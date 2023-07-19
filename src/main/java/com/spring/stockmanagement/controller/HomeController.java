@@ -49,26 +49,6 @@ public class HomeController {
         return "home.html";
     }
 
-    @GetMapping("/company/signup")
-    public String companySignup(Model model)
-    {
-        User user=new User();
-        Company company=new Company();
-        model.addAttribute("user",user);
-        model.addAttribute("company",company);
-        model.addAttribute("title","Registration form");
-        return "companySignup.html";
-    }
-
-    @PostMapping("/company/register")
-    public String companyRegister(@ModelAttribute("user") User user,@ModelAttribute("company") Company company)
-    {
-        companyRepository.save(company);
-        user.setCompany(company);
-        userRepository.save(user);
-        return "redirect:/home/company/signup";
-    }
-
     @GetMapping("/user/signup")
     public String userSignup(Model model)
     {
@@ -87,9 +67,16 @@ public class HomeController {
             model.addAttribute(user);
             return "user_signup";
         }
-        userRepository.save(user);
+        userService.addUser(user);
         model.addAttribute("user",new User());
         session.setAttribute("message", new Message("Successfully Registered", "alert-success"));
         return "redirect:/home/user/signup";
+    }
+
+    @GetMapping("/signin")
+    public String login(Model model)
+    {
+        model.addAttribute("title","Login Page");
+        return "login.html";
     }
 }

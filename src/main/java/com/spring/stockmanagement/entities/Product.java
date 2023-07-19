@@ -13,7 +13,7 @@ public class Product {
 
     private int productPrice;
 
-    private long quantity;
+    private long productQuantity;
 
     private String description;
 
@@ -29,7 +29,7 @@ public class Product {
     public Product(String productName, int productPrice, long quantity, String description, Company company) {
         this.productName = productName;
         this.productPrice = productPrice;
-        this.quantity = quantity;
+        this.productQuantity = quantity;
         this.description = description;
         this.company = company;
     }
@@ -59,12 +59,12 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public long getQuantity() {
-        return quantity;
+    public long getProductQuantity() {
+        return productQuantity;
     }
 
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
+    public void setProductQuantity(long productQuantity) {
+        this.productQuantity = productQuantity;
     }
 
     public String getDescription() {
