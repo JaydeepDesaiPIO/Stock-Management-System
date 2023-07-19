@@ -35,6 +35,7 @@ public class User {
 
     private String password;
 
+    @NotBlank
     private Long contact;
 
     @Enumerated(EnumType.STRING)

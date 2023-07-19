@@ -18,5 +18,7 @@ public class StockManagementSystemApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		String name=" ";
+		System.out.println(name.length());
 	}
 }

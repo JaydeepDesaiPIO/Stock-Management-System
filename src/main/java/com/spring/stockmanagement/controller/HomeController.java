@@ -3,8 +3,10 @@ package com.spring.stockmanagement.controller;
 import com.spring.stockmanagement.Enum.Role;
 import com.spring.stockmanagement.entities.Company;
 import com.spring.stockmanagement.entities.User;
+import com.spring.stockmanagement.helper.Message;
 import com.spring.stockmanagement.repositories.CompanyRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
+import com.spring.stockmanagement.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.nio.file.Files;
 import java.util.List;
 
 @Controller
@@ -27,6 +31,8 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
     @Autowired
     private CompanyRepository companyRepository;
 
@@ -72,19 +78,18 @@ public class HomeController {
     }
 
     @PostMapping("/user/register")
-    public String userRegister(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,Model model)
+    public String userRegister(@ModelAttribute("user") User user, BindingResult bindingResult, Model model, HttpSession session)
     {
-//        if(userRepository.findByName(user.getName())!=null) {
-//            if (userRepository.findByName(user.getName()).equals(user.getName())) {
-//                bindingResult.addError(new FieldError("user", "name", "User already exists"));
-//            }
-//        }
+        userService.isUserValid(user,bindingResult);
+
         if(bindingResult.hasErrors())
         {
             model.addAttribute(user);
             return "user_signup";
         }
         userRepository.save(user);
+        model.addAttribute("user",new User());
+        session.setAttribute("message", new Message("Successfully Registered", "alert-success"));
         return "redirect:/home/user/signup";
     }
 }
