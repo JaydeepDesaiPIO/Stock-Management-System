@@ -16,55 +16,34 @@
                 <div class="my-card">
                     <h1 class="text-center mb-3">Company Registration</h1>
 
-                    <form action=""  method="post">
-                        <div th:object = "${order}">
-                            <div class="form-group mb-3">
-                            <label for="orderNo">Order No.</label>
-                            <input type="number" class="form-control" id="orderNo" placeholder="Order Number"
-                                   th:field="*{orderNumber}" required autofocus="autofocus"
-                            >
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="Date">Date</label>
-                                <input type="date" class="form-control" id="Date" placeholder="Today's Date"
-                                       th:field="*{orderDate}" required autofocus="autofocus"
-                                >
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="User">User</label>
-                                <input type="email" class="form-control" id="User" placeholder="User"
-                                       th:field="*{user}" required autofocus="autofocus"
-                                >
-                            </div>
-                        </div>
-                        <div th:object = "${orderItem}">
-                            <div th:object = "${product}">
+                    <form th:action="@{/user/add/order}"  method="post">
+                        <div th:object="${product}">
                                 <div class="form-group mb-3">
-                                    <label for="product">Product No.</label>
-                                    <input type="number" class="form-control" id="product" placeholder="Product Number"
-                                           required autofocus="autofocus"
-                                           th:field="*{productId}"
+                                    <label for="product">Product Name</label>
+                                    <input type="text" class="form-control" id="product"
+                                           th:field="*{productName}"
                                     >
                                 </div>
-                            </div>
+                        </div>
+                        <div th:object = "${orderItem}">
                             <div class="form-group mb-3">
                                 <label for="price">Price</label>
                                 <input type="number" class="form-control" id="price" placeholder="Price"
                                        th:field="*{price}">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="productQuantity">Price</label>
-                                <input type="number" class="form-control" id="productQuantity" placeholder="Quantity"
-                                       th:field="*{productQuantity}">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" placeholder="Quantity"
+                                       th:field="*{quantity}">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="total">Price</label>
+                                <label for="total">Total Price</label>
                                 <input type="number" class="form-control" id="total" placeholder="Total Price"
                                        th:field="*{totalPrice}">
                             </div>
                         </div>
                         <div class="container text-center">
-                            <a th:href="@{/user/add/order}" type="submit" methods="post" class="btn btn-primary">Add</a>
+                            <button type="submit" class="btn btn-primary">Add</button>
                         </div>
                     </form>
                 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,36 +10,33 @@
     <title>Title</title>
 </head>
 <body>
-
 <div class="container">
     <div class="row">
-        <h1>List of Products</h1>
+        <h1>My Cart</h1>
     </div>
     <table class="table table-bordered">
         <thead class="table-primary">
         <tr>
-            <th>Product ID</th>
             <th>Product Name</th>
-            <th>Price</th>
             <th>Quantity</th>
             <th>Description</th>
-            <th>Company Name</th>
-            <th>Action</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each = "product: ${products}">
-            <td th:text = "${product.productId}"></td>
-            <td th:text = "${product.productName}"></td>
-            <td th:text = "${product.productPrice}"></td>
-            <td th:text = "${product.productQuantity}"></td>
-            <td th:text = "${product.description}"></td>
-            <td th:each = "company: ${product.company}"
-                th:text = "${company.companyName}"></td>
+        <tr th:each = "mycart: ${mycart}">
+            <td th:each = "product: ${mycart.product}"
+                th:text = "${product.productName}">
+            </td>
+            <td th:each = "product: ${mycart.product}"
+                th:text = "${product.productQuantity}">
+            </td>
+            <td th:each = "product: ${mycart.product}"
+                th:text = "${product.description}">
+            </td>
             <td>
-                                <a th:href = "@{/user/order/{id}(id=${product.productId})}"
-                                   class = "btn btn-primary">Order</a>
+                <!--                <a th:href = "@{/admin/users/edit/{id}(id=${user.id})}"-->
+                <!--                   class = "btn btn-primary">Update</a>-->
 
                 <!--                        <a th:href = "@{/admin/books/{id}(id=${book.id})}"-->
                 <!--                           class = "btn btn-danger">Delete</a>-->

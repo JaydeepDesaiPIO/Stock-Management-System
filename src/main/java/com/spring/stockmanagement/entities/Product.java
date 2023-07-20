@@ -21,6 +21,10 @@ public class Product {
     @JoinColumn(name = "company_id")
     private Company company;
 
+//    @ManyToOne
+//    @JoinColumn(name = "cart_id")
+//    private MyCart myCart;
+
     //constructor
 
     public Product() {

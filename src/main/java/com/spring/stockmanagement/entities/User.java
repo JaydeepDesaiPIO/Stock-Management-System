@@ -10,6 +10,7 @@ import org.springframework.jca.cci.object.SimpleRecordOperation;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,6 +42,7 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
     private Company company;
+
 
     public String toString() {
         return "User{" +

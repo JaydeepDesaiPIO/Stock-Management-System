@@ -72,39 +72,31 @@ public class UserServiceImpl implements UserService {
     public void isUserValid(User user, BindingResult bindingResult) {
         if(user!=null)
         {
-            if(user.getName().isBlank() )
-            {
+            if(user.getName().isBlank() ) {
                 bindingResult.addError(new FieldError("user", "name", "Username can not be blank"));
             }
-            if(user.getName()!=null && !user.getName().matches("^[a-zA-Z]+$"))          //&& user.getName().length()<4
-            {
+            if(user.getName()!=null && !user.getName().matches("^[a-zA-Z]+$"))          //&& user.getName().length()<4{
                 bindingResult.addError(new FieldError("user", "name", "Username can only have letters and contains atleast 4 characters"));
             }
-            if(user.getEmail().isBlank())
-            {
+            if(user.getEmail().isBlank()) {
                 bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
             }
-            if(user.getAddress().isBlank())
-            {
+            if(user.getAddress().isBlank()) {
                 bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));
             }
-            if(user.getAddress()!=null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$"))
-            {
+            if(user.getAddress()!=null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$")) {
                 bindingResult.addError(new FieldError("user", "address", "Please write correct address"));
             }
-            if(user.getPassword().isBlank())
-            {
+            if(user.getPassword().isBlank()) {
                 bindingResult.addError(new FieldError("user", "password", "Password can not be blank"));
             }
-            if(user.getPassword()!=null && !user.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$"))
-            {
+            if(user.getPassword()!=null && !user.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$")) {
                 bindingResult.addError(new FieldError("user", "password", "Password must contain atleast one number, one UpperCase letter, one LowerCase letter, one Special Character and password length must 8-15 character"));
             }
-            if(userExistByEmail(user.getEmail()))
-            {
+            if(userExistByEmail(user.getEmail())) {
                 bindingResult.addError(new FieldError("user","email","Email already in use"));
             }
         }
     }
 
-}
+

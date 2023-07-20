@@ -1,6 +1,7 @@
 package com.spring.stockmanagement.service;
 
 import com.spring.stockmanagement.entities.Company;
+import com.spring.stockmanagement.entities.OrderItem;
 import com.spring.stockmanagement.entities.Product;
 import com.spring.stockmanagement.entities.User;
 import com.spring.stockmanagement.repositories.ProductRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -42,5 +44,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(int id) {
         return productRepository.findById(id).get();
+    }
+
+    @Override
+    public Optional<Product> isProductExits(String productName) {
+        return productRepository.findProductByProductName(productName);
+    }
+
+    @Override
+    public Product findProductByName(String name) {
+        return productRepository.findByProductName(name);
+    }
+
+    @Override
+    public void saveOrderItem(Product product, OrderItem orderItem) {
+        if(isProductExits(product.getProductName()).isPresent()){
+            Product product1=productRepository.findByProductName(product.getProductName());
+            orderItem.setProduct(product1);
+        }
     }
 }
