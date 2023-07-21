@@ -21,4 +21,6 @@ public interface UserService {
     boolean userExistByEmail(String email);
 
     void isUserValid(User user, BindingResult bindingResult);
+
+    void deleteUserById(int id);
 }

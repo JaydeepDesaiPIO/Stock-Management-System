@@ -26,19 +26,9 @@ public class AdminController {
         return "admin/user_list.html";
     }
 
-    @GetMapping("/users/edit/{id}")
+    @GetMapping("/users/delete/{id}")
     public String editUser(@PathVariable int id, Model model) {
-        model.addAttribute("user", userService.findById(id));
-        return "admin/edit_user";
-    }
-
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
-    public String updateBook(@PathVariable int id,
-                             @ModelAttribute("user") User user,
-                             Model model)
-    {
-        // save updated book
-        userService.update(user,id);
+       userService.deleteUserById(id);
         return "redirect:/admin/users";
     }
 
