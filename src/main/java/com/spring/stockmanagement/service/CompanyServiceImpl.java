@@ -40,6 +40,15 @@ public class CompanyServiceImpl implements CompanyService {
             if(checkCompany(company.getCompanyName()).isPresent()){
                 bindingResult.addError(new FieldError("company","companyName","Company already exist"));
             }
+            if(company.getContactNo().isBlank()){
+                bindingResult.addError(new FieldError("company", "contactNo", "Contact can not be blank"));
+            }
+            if(company.getContactNo()!=null && !company.getContactNo().matches("^[0-9].{10}+$")) {
+                bindingResult.addError(new FieldError("company", "contactNo", "Contact must be of 10 digits"));
+            }
+            if(company.getCompanyAddress().isBlank()) {
+                bindingResult.addError(new FieldError("company", "companyAddress", "Address can not be blank"));
+            }
         }
     }
 

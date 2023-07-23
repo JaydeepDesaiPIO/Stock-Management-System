@@ -3,6 +3,7 @@ package com.spring.stockmanagement.service;
 import com.spring.stockmanagement.entities.User;
 import com.spring.stockmanagement.repositories.UserRepository;
 import com.spring.stockmanagement.service.Interface.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
     public User addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return  userRepository.save(user);
+
     }
 
     @Override
@@ -38,10 +40,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user, int id) {
-        User existingUser=userRepository.findById(id).get();
-        existingUser.setAddress(user.getAddress());
-        return userRepository.save(existingUser);
+    public User update(User user, int id, BindingResult bindingResult) {
+        User existingUser = userRepository.findById(id).get();
+        if (user != null) {
+            if(StringUtils.isBlank(user.getEmail()))
+            if (user.getEmail().isBlank()) {
+                bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
+            }
+            if(!existingUser.getEmail().equalsIgnoreCase(user.getEmail()) && userExistByEmail(user.getEmail())) {
+                bindingResult.addError(new FieldError("user","email","Email already in use"));
+            }
+            else { existingUser.setEmail(user.getEmail());}
+
+            if (user.getAddress().isBlank()) {
+                bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));
+            }
+            if (user.getAddress() != null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$")) {
+                bindingResult.addError(new FieldError("user", "address", "Please write correct address"));
+            }
+        }
+
+            existingUser.setAddress(user.getAddress());
+            existingUser.setContact(user.getContact());
+            return userRepository.save(existingUser);
+
     }
 
     @Override
@@ -80,6 +102,12 @@ public class UserServiceImpl implements UserService {
             }
             if(user.getEmail().isBlank()) {
                 bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
+            }
+            if(user.getContact().isBlank()){
+                bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
+            }
+            if(user.getContact()!=null && !user.getContact().matches("^[0-9].{10}+$")) {
+                bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
             }
             if(user.getAddress().isBlank()) {
                 bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));

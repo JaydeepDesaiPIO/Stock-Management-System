@@ -32,7 +32,7 @@ public class User {
 
     private String password;
 
-    private Long contact;
+    private String contact;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -104,12 +104,20 @@ public class User {
         this.password = password;
     }
 
-    public Long getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(Long contact) {
+    public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getAddress() {
@@ -126,13 +134,5 @@ public class User {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

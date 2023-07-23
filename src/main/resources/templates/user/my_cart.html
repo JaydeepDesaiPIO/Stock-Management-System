@@ -18,7 +18,7 @@
         <thead class="table-primary">
         <tr>
             <th>Product Name</th>
-            <th>Quantity</th>
+<!--            <th>Quantity</th>-->
             <th>Description</th>
         </tr>
         </thead>
@@ -28,18 +28,15 @@
             <td th:each = "product: ${mycart.product}"
                 th:text = "${product.productName}">
             </td>
-            <td th:each = "product: ${mycart.product}"
-                th:text = "${product.productQuantity}">
-            </td>
+<!--            <td th:each = "product: ${mycart.product}"-->
+<!--                th:text = "${product.productQuantity}">-->
+<!--            </td>-->
             <td th:each = "product: ${mycart.product}"
                 th:text = "${product.description}">
             </td>
             <td>
-                <!--                <a th:href = "@{/admin/users/edit/{id}(id=${user.id})}"-->
-                <!--                   class = "btn btn-primary">Update</a>-->
-
-                <!--                        <a th:href = "@{/admin/books/{id}(id=${book.id})}"-->
-                <!--                           class = "btn btn-danger">Delete</a>-->
+                                <a th:href = ""
+                                   class = "btn btn-primary">Remove</a>
             </td>
         </tr>
         </tbody>

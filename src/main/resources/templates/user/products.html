@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymleaf.org">
+<html lang="en" xmlns:th="http://www.thymleaf.org"
+      th:replace="user/base::layout(~{::section})">>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-
+<section>
 <div class="container">
     <div class="row">
         <h1>List of Products</h1>
@@ -41,12 +42,13 @@
                                 <a th:href = "@{/user/order/{id}(id=${product.productId})}"
                                    class = "btn btn-primary">Order</a>
 
-                <!--                        <a th:href = "@{/admin/books/{id}(id=${book.id})}"-->
-                <!--                           class = "btn btn-danger">Delete</a>-->
+                                <a th:href = "@{/user/mycart/{id}(id=${product.productId})}"
+                                   class = "btn btn-danger">Add to Cart</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+</section>
 </body>
 </html>

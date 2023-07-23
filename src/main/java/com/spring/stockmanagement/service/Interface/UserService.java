@@ -11,7 +11,7 @@ public interface UserService {
     public User addUser(User user);
     public List<User> getAllUsers();
     User findById(int id);
-    User update(User user, int id);
+    User update(User user, int id, BindingResult bindingResult);
     Optional<User> findByName(String name);
 
     boolean userExists(String name);

@@ -1,6 +1,7 @@
 package com.spring.stockmanagement;
 
 import com.spring.stockmanagement.service.Interface.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,5 +19,9 @@ public class StockManagementSystemApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		String email = new String();
+	//	System.out.println(email.isBlank());
+		System.out.println(StringUtils.isBlank(email));
+		System.out.println(email);
 	}
 }

@@ -29,7 +29,7 @@ public class Company {
 
     private String companyAddress;
 
-    private long contactNo;
+    private String contactNo;
 
     @OneToMany(mappedBy = "company")
     private List<User> user;
@@ -50,7 +50,6 @@ public class Company {
 //    }
 
     //getter setter
-
 
     public int getId() {
         return id;
@@ -76,11 +75,11 @@ public class Company {
         this.companyAddress = companyAddress;
     }
 
-    public long getContactNo() {
+    public String getContactNo() {
         return contactNo;
     }
 
-    public void setContactNo(long contactNo) {
+    public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
     }
 

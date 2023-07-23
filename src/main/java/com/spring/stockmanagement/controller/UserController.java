@@ -8,6 +8,7 @@ import com.spring.stockmanagement.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -55,10 +56,17 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public String updateBook(@PathVariable int id,
                              @ModelAttribute("user") User user,
+                             BindingResult bindingResult,
                              Model model)
     {
-        // save updated book
-        userService.update(user,id);
+        // save updated user
+        userService.update(user,id,bindingResult);
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute(user);
+            return "user/edit_user";
+        }
+
         return "redirect:/user/";
     }
 
@@ -77,20 +85,24 @@ public class UserController {
     }
 
     @PostMapping("/add/order")
-    public String addOrderItemToOrderList(@ModelAttribute("product") Product product, @ModelAttribute("orderItem") OrderItem orderItem, Principal principal, Model model) {
+    public String addOrderItemToOrderList(@ModelAttribute("product") Product product, @ModelAttribute("orderItem") OrderItem orderItem, Model model) {
         productService.saveOrderItem(product, orderItem);
-        if (productService.isProductExits(product.getProductName()).isPresent()) {
-            Product product1 = productService.findProductByName(product.getProductName());
 
-            MyCart myCart = new MyCart();
-            myCart.setProduct(product1);
-            String currentUserName = principal.getName();
-            User CurrentUser = userRepository.findByName(currentUserName).get();
-            myCart.setUser(CurrentUser);
-            myCartRepository.save(myCart);
-            model.addAttribute("mycart", myCartService.findByUser(CurrentUser));
-        }
-            return "user/my_cart";
+        return "user/my_cart";
+    }
+
+    @GetMapping("/mycart/{id}")
+    public String addProductToCart(@PathVariable("id") int id, Model model, Principal principal) {
+
+        Product product=productService.getProductById(id);
+        MyCart myCart = new MyCart();
+        myCart.setProduct(product);
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        myCart.setUser(CurrentUser);
+        myCartRepository.save(myCart);
+        model.addAttribute("mycart", myCartService.findByUser(CurrentUser));
+        return "user/my_cart";
     }
 
 }

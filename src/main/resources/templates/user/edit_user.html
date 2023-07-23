@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="user/base::layout(~{::section})">>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +11,7 @@
     <title>Library Management System</title>
 </head>
 <body>
-
+<section>
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
@@ -26,12 +27,38 @@
                                    name="name">
                         </div>
                         <div class="form-group mb-3">
+                            <label>Email</label>
+                            <input type="text"
+                                   class="form-control"
+                                   th:field = "*{email}"
+                                   placeholder="Enter Email"
+                                   name="address" th:errorClass="is-invalid"
+                            >
+                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback">
+                            </p>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Contact</label>
+                            <input type="text"
+                                   class="form-control"
+                                   th:field = "*{contact}"
+                                   placeholder="Enter Address"
+                                   name="address" th:errorClass="is-invalid"
+                            >
+                            <p th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}" class="invalid-feedback">
+                            </p>
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label>Address</label>
                             <input type="text"
                                    class="form-control"
                                    th:field = "*{address}"
                                    placeholder="Enter Address"
-                                   name="address">
+                                   name="address" th:errorClass="is-invalid"
+                            >
+                            <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="invalid-feedback">
+                            </p>
                         </div>
 
                         <div class="container text-center">
@@ -44,6 +71,6 @@
             </div>
         </div>
     </div>
-
+</section>
 </body>
 </html>
