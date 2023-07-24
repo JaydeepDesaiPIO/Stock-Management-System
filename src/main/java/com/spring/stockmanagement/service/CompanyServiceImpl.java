@@ -5,6 +5,7 @@ import com.spring.stockmanagement.entities.User;
 import com.spring.stockmanagement.repositories.CompanyRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
 import com.spring.stockmanagement.service.Interface.CompanyService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -34,19 +35,19 @@ public class CompanyServiceImpl implements CompanyService {
     public void validateCompany(Company company, BindingResult bindingResult) {
         if(company!=null)
         {
-            if(company.getCompanyName().isBlank()){
+            if(StringUtils.isBlank(company.getCompanyName())){
                 bindingResult.addError(new FieldError("company","companyName","Company name cannot be blank"));
             }
             if(checkCompany(company.getCompanyName()).isPresent()){
                 bindingResult.addError(new FieldError("company","companyName","Company already exist"));
             }
-            if(company.getContactNo().isBlank()){
+            if(StringUtils.isBlank(company.getContactNo())){
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact can not be blank"));
             }
             if(company.getContactNo()!=null && !company.getContactNo().matches("^[0-9].{10}+$")) {
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact must be of 10 digits"));
             }
-            if(company.getCompanyAddress().isBlank()) {
+            if(StringUtils.isBlank(company.getCompanyAddress())){
                 bindingResult.addError(new FieldError("company", "companyAddress", "Address can not be blank"));
             }
         }

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,8 +86,27 @@ public class UserController {
     }
 
     @PostMapping("/add/order")
-    public String addOrderItemToOrderList(@ModelAttribute("product") Product product, @ModelAttribute("orderItem") OrderItem orderItem, Model model) {
+    public String addOrderItemToOrderList(@ModelAttribute("product") Product product, @ModelAttribute("orderItem") OrderItem orderItem, Model model, Principal principal) {
+
+        //find and set product to orderItem
         productService.saveOrderItem(product, orderItem);
+
+        //order obj
+        Orders order=new Orders();
+        //set order to orderItem
+        orderItem.setOrders(order);
+        //set orderItem list to order
+        order.setOrderItems(List.of(orderItem));
+        //get current user
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        //set user to order
+        order.setUser(CurrentUser);
+
+       // order.setOrderDate();
+
+        orderRepository.save(order);
+        orderItemRepository.save(orderItem);
 
         return "user/my_cart";
     }
@@ -101,6 +121,15 @@ public class UserController {
         User CurrentUser = userRepository.findByName(currentUserName).get();
         myCart.setUser(CurrentUser);
         myCartRepository.save(myCart);
+        model.addAttribute("mycart", myCartService.findByUser(CurrentUser));
+        return "user/my_cart";
+    }
+
+    @GetMapping("/mycart")
+    public String myCart(Model model,Principal principal)
+    {
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
         model.addAttribute("mycart", myCartService.findByUser(CurrentUser));
         return "user/my_cart";
     }

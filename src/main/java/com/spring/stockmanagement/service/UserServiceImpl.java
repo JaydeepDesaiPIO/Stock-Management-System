@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     public User update(User user, int id, BindingResult bindingResult) {
         User existingUser = userRepository.findById(id).get();
         if (user != null) {
-            if(StringUtils.isBlank(user.getEmail()))
-            if (user.getEmail().isBlank()) {
+
+            if(StringUtils.isBlank(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
             }
             if(!existingUser.getEmail().equalsIgnoreCase(user.getEmail()) && userExistByEmail(user.getEmail())) {
@@ -52,11 +52,15 @@ public class UserServiceImpl implements UserService {
             }
             else { existingUser.setEmail(user.getEmail());}
 
-            if (user.getAddress().isBlank()) {
+            if(StringUtils.isBlank(user.getAddress())) {
                 bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));
             }
             if (user.getAddress() != null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$")) {
                 bindingResult.addError(new FieldError("user", "address", "Please write correct address"));
+            }
+            if(StringUtils.isBlank(user.getContact()))
+            {
+                bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
         }
 
@@ -94,28 +98,28 @@ public class UserServiceImpl implements UserService {
     public void isUserValid(User user, BindingResult bindingResult) {
         if(user!=null)
         {
-            if(user.getName().isBlank() ) {
+            if(StringUtils.isBlank(user.getName())) {
                 bindingResult.addError(new FieldError("user", "name", "Username can not be blank"));
             }
             if(user.getName()!=null && !user.getName().matches("^[a-zA-Z]+$"))          //&& user.getName().length()<4{
                 bindingResult.addError(new FieldError("user", "name", "Username can only have letters and contains atleast 4 characters"));
             }
-            if(user.getEmail().isBlank()) {
+            if(StringUtils.isBlank(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
             }
-            if(user.getContact().isBlank()){
+            if(StringUtils.isBlank(user.getContact())){
                 bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
             if(user.getContact()!=null && !user.getContact().matches("^[0-9].{10}+$")) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
             }
-            if(user.getAddress().isBlank()) {
+            if(StringUtils.isBlank(user.getAddress())){
                 bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));
             }
             if(user.getAddress()!=null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$")) {
                 bindingResult.addError(new FieldError("user", "address", "Please write correct address"));
             }
-            if(user.getPassword().isBlank()) {
+            if(StringUtils.isBlank(user.getPassword())) {
                 bindingResult.addError(new FieldError("user", "password", "Password can not be blank"));
             }
             if(user.getPassword()!=null && !user.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$")) {

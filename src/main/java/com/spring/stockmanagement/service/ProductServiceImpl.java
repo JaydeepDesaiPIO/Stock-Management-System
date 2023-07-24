@@ -61,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
         if(isProductExits(product.getProductName()).isPresent()){
             Product product1=productRepository.findByProductName(product.getProductName());
             orderItem.setProduct(product1);
+            orderItem.setPrice(product1.getProductPrice());
         }
     }
 }

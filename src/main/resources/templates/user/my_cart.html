@@ -35,12 +35,16 @@
                 th:text = "${product.description}">
             </td>
             <td>
-                                <a th:href = ""
+                                <a href = "#"
                                    class = "btn btn-primary">Remove</a>
             </td>
         </tr>
         </tbody>
     </table>
+    <div class="container text-center">
+        <a th:href = "@{/user/products}"
+           class = "btn btn-primary">Add more products</a>
+    </div>
 </div>
 </body>
 </html>
