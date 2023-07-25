@@ -40,6 +40,14 @@ public class UserController {
     @Autowired
     private MyCartService myCartService;
 
+    @ModelAttribute("user")
+    public User getUser(Principal principal)
+    {
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        return CurrentUser;
+    }
+
     @GetMapping("/")
     public String userDashboard(Model model, Principal principal) {
         String currentUserName = principal.getName();

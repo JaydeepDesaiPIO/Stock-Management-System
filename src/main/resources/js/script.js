@@ -1,4 +1,4 @@
-const toggleSidebar = () => {
+function toggleSidebar(){
     if($(".sidebar").is(":visible")){
     //hide
         $(".sidebar").css("display", "none");
