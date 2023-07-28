@@ -1,6 +1,7 @@
 package com.spring.stockmanagement.controller;
 
 import com.spring.stockmanagement.entities.*;
+import com.spring.stockmanagement.helper.Message;
 import com.spring.stockmanagement.repositories.*;
 import com.spring.stockmanagement.service.Interface.MyCartService;
 import com.spring.stockmanagement.service.Interface.ProductService;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -120,17 +122,27 @@ public class UserController {
     }
 
     @GetMapping("/mycart/{id}")
-    public String addProductToCart(@PathVariable("id") int id, Model model, Principal principal) {
+    public String addProductToCart(@PathVariable("id") int id, Model model, Principal principal, HttpSession session) {
 
         Product product=productService.getProductById(id);
         MyCart myCart = new MyCart();
-        myCart.setProduct(product);
-        String currentUserName = principal.getName();
-        User CurrentUser = userRepository.findByName(currentUserName).get();
-        myCart.setUser(CurrentUser);
-        myCartRepository.save(myCart);
-        model.addAttribute("mycart", myCartService.findByUser(CurrentUser));
-        return "user/my_cart";
+//        myCart.setProduct(product);
+//        String currentUserName = principal.getName();
+//        User CurrentUser = userRepository.findByName(currentUserName).get();
+//        myCart.setUser(CurrentUser);
+//        myCartRepository.save(myCart);
+//        session.setAttribute("message", new Message("Product added to cart", "alert-success"));
+        model.addAttribute("product",product);
+        model.addAttribute("myCart",myCart);
+        return "user/addToCart";
+    }
+
+    @PostMapping("/addToCart")
+    public String addToCart(@ModelAttribute ("product") Product product,@ModelAttribute("myCart") MyCart myCart,Principal principal,HttpSession session)
+    {
+        productService.addProductToCart(product,myCart,principal,session);
+        session.setAttribute("message", new Message("Product added to cart", "alert-success"));
+        return "redirect:/user/products";
     }
 
     @GetMapping("/mycart")
@@ -140,6 +152,13 @@ public class UserController {
         User CurrentUser = userRepository.findByName(currentUserName).get();
         model.addAttribute("mycart", myCartService.findByUser(CurrentUser));
         return "user/my_cart";
+    }
+
+    @GetMapping("/buy")
+    public void buyProductsFromCart(@ModelAttribute("orderItem") OrderItem orderItem)
+    {
+       // List<MyCart> myCarts=myCartList;
+        OrderItem orderItem1=orderItem;
     }
 
 }

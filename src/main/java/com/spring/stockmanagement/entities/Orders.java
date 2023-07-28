@@ -4,7 +4,9 @@ import com.spring.stockmanagement.Enum.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.GenericGenerators;
+import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -18,11 +20,13 @@ public class Orders {
 
     @Id
     @Column(name = "order_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    private String orderNumber;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "order_gen")
+    @GenericGenerator(name = "order_gen", strategy = "com.spring.stockmanagement.entities.SequenceGenerator",parameters = {
+            @Parameter(name = SequenceGenerator.INCREMENT_PARAM, value = "1"),
+            @Parameter(name = SequenceGenerator.VALUE_PREFIX_PARAMETER, value = "ORD"),
+            @Parameter(name = SequenceGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d")
+    })
+    private String id;
     private Date orderDate;
 
     @Enumerated(EnumType.STRING)
@@ -36,20 +40,12 @@ public class Orders {
 
 //getter setter
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
     }
 
     public Date getOrderDate() {

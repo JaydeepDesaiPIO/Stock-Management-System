@@ -23,7 +23,6 @@ class OrderRepositoryTest {
 
 
         Orders o= Orders.builder()
-                .orderNumber("ORD01")
                 .status(OrderStatus.PENDING)
 
                // .orderItems()

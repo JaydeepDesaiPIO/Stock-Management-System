@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add to Cart</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert alert-info">
+            <p class="text-center" th:text="${session.message.content}"></p>
+
+            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+        </div>
+        <div class="col-md-6 offset-md-3">
+            <div class="my-card">
+                <h1 class="text-center mb-3">Order</h1>
+
+                <form th:action="@{/user/addToCart}"  method="post">
+                    <div th:object="${product}">
+                        <div class="form-group mb-3">
+                            <label for="product">Product Name</label>
+                            <input type="text" class="form-control" id="product"
+                                   th:field="*{productName}"
+                            >
+                        </div>
+
+                        <div th:object = "${myCart}">
+                            <div class="form-group mb-3">
+                                <label for="productCount">Quantity</label>
+                                <input type="number" class="form-control" id="productCount" placeholder="Quantity"
+                                       th:field="*{productCount}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container text-center">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

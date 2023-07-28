@@ -1,8 +1,10 @@
 package com.spring.stockmanagement.service.Interface;
 
+import com.spring.stockmanagement.entities.MyCart;
 import com.spring.stockmanagement.entities.OrderItem;
 import com.spring.stockmanagement.entities.Product;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +22,6 @@ public interface ProductService {
     Product findProductByName(String name);
 
     void saveOrderItem(Product product, OrderItem orderItem);
+
+    void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session);
 }

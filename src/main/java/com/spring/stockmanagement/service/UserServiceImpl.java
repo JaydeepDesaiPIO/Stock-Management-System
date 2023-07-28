@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
             if(StringUtils.isBlank(user.getContact())){
                 bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
-            if(user.getContact()!=null && !user.getContact().matches("^[0-9].{10}+$")) {
+            if(user.getContact()!=null && !user.getContact().matches("^[0-9].{9}+$")) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
             }
             if(StringUtils.isBlank(user.getAddress())){

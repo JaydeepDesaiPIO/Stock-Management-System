@@ -42,6 +42,7 @@ public class HomeController {
         return List.of(Role.values());
     }
 
+
     @GetMapping("/")
     public String home(Model model)
     {

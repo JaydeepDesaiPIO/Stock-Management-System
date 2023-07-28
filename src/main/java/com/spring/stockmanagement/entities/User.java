@@ -43,7 +43,6 @@ public class User {
     @JoinColumn(name = "company_id")
     private Company company;
 
-
     public String toString() {
         return "User{" +
                 "id=" + id +

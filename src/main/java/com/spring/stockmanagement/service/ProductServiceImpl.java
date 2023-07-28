@@ -1,15 +1,15 @@
 package com.spring.stockmanagement.service;
 
-import com.spring.stockmanagement.entities.Company;
-import com.spring.stockmanagement.entities.OrderItem;
-import com.spring.stockmanagement.entities.Product;
-import com.spring.stockmanagement.entities.User;
+import com.spring.stockmanagement.entities.*;
+import com.spring.stockmanagement.helper.Message;
+import com.spring.stockmanagement.repositories.MyCartRepository;
 import com.spring.stockmanagement.repositories.ProductRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
 import com.spring.stockmanagement.service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +22,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MyCartRepository myCartRepository;
 
     @Override
     public Product addProduct(Product product) {
@@ -62,6 +65,25 @@ public class ProductServiceImpl implements ProductService {
             Product product1=productRepository.findByProductName(product.getProductName());
             orderItem.setProduct(product1);
             orderItem.setPrice(product1.getProductPrice());
+        }
+    }
+
+    @Override
+    public void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session) {
+        if(isProductExits(product.getProductName()).isPresent()) {
+            Product product1 = productRepository.findByProductName(product.getProductName());
+            if(product1.getProductQuantity()>0 && product1.getProductQuantity()> myCart.getProductCount()) {
+                product1.setProductQuantity(product1.getProductQuantity() - myCart.getProductCount());
+                myCart.setProduct(product1);
+                productRepository.save(product1);
+                String currentUserName=principal.getName();
+                User CurrentUser=userRepository.findByName(currentUserName).get();
+                myCart.setUser(CurrentUser);
+                myCartRepository.save(myCart);
+            }
+            else {
+                session.setAttribute("message", new Message("only "+product1.getProductQuantity()+" available", "alert-danger"));
+            }
         }
     }
 }
