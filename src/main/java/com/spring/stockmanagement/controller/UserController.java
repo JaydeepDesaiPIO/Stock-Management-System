@@ -155,10 +155,28 @@ public class UserController {
     }
 
     @GetMapping("/buy")
-    public void buyProductsFromCart(@ModelAttribute("orderItem") OrderItem orderItem)
+    public String buyProductsFromCart(Principal principal)
     {
-       // List<MyCart> myCarts=myCartList;
-        OrderItem orderItem1=orderItem;
-    }
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        Orders orders=new Orders();
+        orders.setUser(CurrentUser);
+        List<OrderItem> orderItemList=new ArrayList<>();
+        for (MyCart mycart : myCartService.findByUser(CurrentUser))
+        {
+            OrderItem orderItem=new OrderItem();
+            orderItem.setProduct(mycart.getProduct());
+            orderItem.setQuantity(mycart.getProductCount());
+            orderItem.setPrice(mycart.getProduct().getProductPrice());
+            orderItem.setTotalPrice(mycart.getProductCount()*mycart.getProduct().getProductPrice());
+            orderItem.setOrders(orders);
 
+            orderItemList.add(orderItem);
+            orders.setOrderItems(orderItemList);
+            orderRepository.save(orders);
+            orderItemRepository.save(orderItem);
+            myCartRepository.deleteAll();
+        }
+        return "user/success";
+    }
 }

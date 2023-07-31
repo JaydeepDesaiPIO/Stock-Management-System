@@ -1,7 +1,7 @@
 package com.spring.stockmanagement.entities;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class MyCart {

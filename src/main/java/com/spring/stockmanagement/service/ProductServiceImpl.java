@@ -8,7 +8,6 @@ import com.spring.stockmanagement.repositories.UserRepository;
 import com.spring.stockmanagement.service.Interface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
@@ -77,8 +76,8 @@ public class ProductServiceImpl implements ProductService {
                 myCart.setProduct(product1);
                 productRepository.save(product1);
                 String currentUserName=principal.getName();
-                User CurrentUser=userRepository.findByName(currentUserName).get();
-                myCart.setUser(CurrentUser);
+                User currentUser= userRepository.findByName(currentUserName).get();
+                myCart.setUser(currentUser);
                 myCartRepository.save(myCart);
             }
             else {
