@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="user/base::layout(~{::section})">>
+      th:replace="user/base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,6 +14,11 @@
 <section>
     <div class="container">
         <div class="row">
+            <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert alert-info">
+                <p class="text-center" th:text="${session.message.content}"></p>
+
+                <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+            </div>
             <div class="col-md-6 offset-md-3">
                 <div class="my-card">
                     <h1 class="text-center mb-3">Order</h1>
@@ -36,7 +41,9 @@
                             <div class="form-group mb-3">
                                 <label for="quantity">Quantity</label>
                                 <input type="number" class="form-control" id="quantity" placeholder="Quantity"
-                                       th:field="*{quantity}">
+                                       th:field="*{quantity}"th:errorClass="is-invalid"
+                                >
+                                <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="invalid-feedback"></p>
                             </div>
                         </div>
                             <div class="form-group mb-3">

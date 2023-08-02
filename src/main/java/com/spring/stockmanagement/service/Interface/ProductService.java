@@ -3,6 +3,7 @@ package com.spring.stockmanagement.service.Interface;
 import com.spring.stockmanagement.entities.MyCart;
 import com.spring.stockmanagement.entities.OrderItem;
 import com.spring.stockmanagement.entities.Product;
+import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -21,7 +22,7 @@ public interface ProductService {
 
     Product findProductByName(String name);
 
-    void saveOrderItem(Product product, OrderItem orderItem);
+    void saveOrderItem(Product product, OrderItem orderItem, BindingResult bindingResult);
 
-    void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session);
+    void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session, BindingResult bindingResult);
 }

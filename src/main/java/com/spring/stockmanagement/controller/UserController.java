@@ -96,10 +96,19 @@ public class UserController {
     }
 
     @PostMapping("/add/order")
-    public String addOrderItemToOrderList(@ModelAttribute("product") Product product, @ModelAttribute("orderItem") OrderItem orderItem, Model model, Principal principal) {
+    public String addOrderItemToOrderList(@ModelAttribute("product") Product product,
+                                          @ModelAttribute("orderItem") OrderItem orderItem,
+                                          BindingResult bindingResult,HttpSession session,
+                                          Model model, Principal principal) {
 
         //find and set product to orderItem
-        productService.saveOrderItem(product, orderItem);
+        productService.saveOrderItem(product, orderItem,bindingResult);
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("product",product);
+            model.addAttribute("orderItem",orderItem);
+            return "user/order";
+        }
 
         //order obj
         Orders order=new Orders();
@@ -117,30 +126,29 @@ public class UserController {
 
         orderRepository.save(order);
         orderItemRepository.save(orderItem);
-
-        return "user/my_cart";
+        session.setAttribute("message", new Message("Order placed successfully!!", "alert-success"));
+        return "user/order";
     }
 
     @GetMapping("/mycart/{id}")
-    public String addProductToCart(@PathVariable("id") int id, Model model, Principal principal, HttpSession session) {
+    public String addProductToCart(@PathVariable("id") int id, Model model) {
 
         Product product=productService.getProductById(id);
         MyCart myCart = new MyCart();
-//        myCart.setProduct(product);
-//        String currentUserName = principal.getName();
-//        User CurrentUser = userRepository.findByName(currentUserName).get();
-//        myCart.setUser(CurrentUser);
-//        myCartRepository.save(myCart);
-//        session.setAttribute("message", new Message("Product added to cart", "alert-success"));
         model.addAttribute("product",product);
         model.addAttribute("myCart",myCart);
         return "user/addToCart";
     }
 
     @PostMapping("/addToCart")
-    public String addToCart(@ModelAttribute ("product") Product product,@ModelAttribute("myCart") MyCart myCart,Principal principal,HttpSession session)
+    public String addToCart(@ModelAttribute ("product") Product product,@ModelAttribute("myCart") MyCart myCart,BindingResult bindingResult,Principal principal,HttpSession session,Model model)
     {
-        productService.addProductToCart(product,myCart,principal,session);
+        productService.addProductToCart(product,myCart,principal,session,bindingResult);
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("myCart",myCart);
+            return "user/addToCart";
+        }
         session.setAttribute("message", new Message("Product added to cart", "alert-success"));
         return "redirect:/user/products";
     }

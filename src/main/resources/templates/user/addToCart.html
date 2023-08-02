@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="user/base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <title>Add to Cart</title>
 </head>
 <body>
+<section>
 <div class="container">
     <div class="row">
         <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert alert-info">
@@ -29,7 +36,9 @@
                             <div class="form-group mb-3">
                                 <label for="productCount">Quantity</label>
                                 <input type="number" class="form-control" id="productCount" placeholder="Quantity"
-                                       th:field="*{productCount}">
+                                       th:field="*{productCount}" th:errorClass="is-invalid"
+                                >
+                                <p th:if="${#fields.hasErrors('productCount')}" th:errors="*{productCount}" class="invalid-feedback"></p>
                             </div>
                         </div>
                     </div>
@@ -41,5 +50,6 @@
         </div>
     </div>
 </div>
+</section>
 </body>
 </html>

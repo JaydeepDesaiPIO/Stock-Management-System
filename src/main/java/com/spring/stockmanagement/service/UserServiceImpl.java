@@ -62,12 +62,13 @@ public class UserServiceImpl implements UserService {
             {
                 bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
+            if(!existingUser.getContact().equalsIgnoreCase(user.getContact()) && userExistByContact(user.getContact())){
+                bindingResult.addError(new FieldError("user", "contact", "Contact already in exist"));
+            }
         }
-
             existingUser.setAddress(user.getAddress());
             existingUser.setContact(user.getContact());
             return userRepository.save(existingUser);
-
     }
 
     @Override
@@ -95,40 +96,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findByContact(String contact) {
+        return userRepository.findByContact(contact);
+    }
+
+    @Override
+    public boolean userExistByContact(String contact) {
+        return userRepository.findByContact(contact).isPresent();
+    }
+
+    @Override
     public void isUserValid(User user, BindingResult bindingResult) {
-        if(user!=null)
-        {
-            if(StringUtils.isBlank(user.getName())) {
+        if (user != null) {
+            if (StringUtils.isBlank(user.getName())) {
                 bindingResult.addError(new FieldError("user", "name", "Username can not be blank"));
             }
-            if(user.getName()!=null && !user.getName().matches("^[a-zA-Z]+$"))          //&& user.getName().length()<4{
+            if (user.getName() != null && !user.getName().matches("^[a-zA-Z]+$")) {         //&& user.getName().length()<4{
                 bindingResult.addError(new FieldError("user", "name", "Username can only have letters and contains atleast 4 characters"));
             }
-            if(StringUtils.isBlank(user.getEmail())) {
+            if (StringUtils.isBlank(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
             }
-            if(StringUtils.isBlank(user.getContact())){
+            if (StringUtils.isBlank(user.getContact())) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
-            if(user.getContact()!=null && !user.getContact().matches("^[0-9].{9}+$")) {
+            if (user.getContact() != null && !user.getContact().matches("^[0-9].{9}+$")) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
             }
-            if(StringUtils.isBlank(user.getAddress())){
+            if (StringUtils.isBlank(user.getAddress())) {
                 bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));
             }
-            if(user.getAddress()!=null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$")) {
+            if (user.getAddress() != null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$")) {
                 bindingResult.addError(new FieldError("user", "address", "Please write correct address"));
             }
-            if(StringUtils.isBlank(user.getPassword())) {
+            if (StringUtils.isBlank(user.getPassword())) {
                 bindingResult.addError(new FieldError("user", "password", "Password can not be blank"));
             }
-            if(user.getPassword()!=null && !user.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$")) {
+            if (user.getPassword() != null && !user.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$")) {
                 bindingResult.addError(new FieldError("user", "password", "Password must contain atleast one number, one UpperCase letter, one LowerCase letter, one Special Character and password length must 8-15 character"));
             }
-            if(userExistByEmail(user.getEmail())) {
-                bindingResult.addError(new FieldError("user","email","Email already in use"));
+            if (userExistByEmail(user.getEmail())) {
+                bindingResult.addError(new FieldError("user", "email", "Email already in use"));
             }
         }
+    }
 
     @Override
     public void deleteUserById(int id) {

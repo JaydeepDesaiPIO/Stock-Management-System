@@ -20,6 +20,10 @@ public interface UserService {
 
     boolean userExistByEmail(String email);
 
+    Optional<User> findByContact(String contact);
+
+    boolean userExistByContact(String contact);
+
     void isUserValid(User user, BindingResult bindingResult);
 
     void deleteUserById(int id);
