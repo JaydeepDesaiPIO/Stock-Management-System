@@ -3,6 +3,7 @@ package com.spring.stockmanagement.controller;
 import com.spring.stockmanagement.entities.Company;
 import com.spring.stockmanagement.entities.Product;
 import com.spring.stockmanagement.entities.User;
+import com.spring.stockmanagement.helper.Message;
 import com.spring.stockmanagement.repositories.CompanyRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
 import com.spring.stockmanagement.service.Interface.CompanyService;
@@ -12,11 +13,9 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 @Controller
@@ -30,7 +29,19 @@ public class CompanyController {
     private CompanyService companyService;
 
     @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @ModelAttribute("currentCompany")
+    public Company getCompany(Principal principal)
+    {
+        String username=principal.getName();
+        User user=userRepository.findByName(username).get();
+        Company company=user.getCompany();
+        return company;
+    }
 
 
     @GetMapping("/")
@@ -51,7 +62,7 @@ public class CompanyController {
     }
 
     @PostMapping("/register")
-    public String companyRegister(@ModelAttribute("company") Company company, BindingResult bindingResult,Model model,Principal principal)
+    public String companyRegister(@ModelAttribute("company") Company company, BindingResult bindingResult, Model model, Principal principal, HttpSession session)
     {
         companyService.validateCompany(company,bindingResult);
         if(bindingResult.hasErrors())
@@ -59,12 +70,8 @@ public class CompanyController {
             model.addAttribute("company",company);
             return "companySignup";
         }
-        companyService.saveCompany(company);
-
-        String currentUserName=principal.getName();
-        User CurrentUser=userRepository.findByName(currentUserName).get();
-        CurrentUser.setCompany(company);
-        userRepository.save(CurrentUser);
+        companyService.saveCompany(company,principal);
+        session.setAttribute("message", new Message("Registration Successful", "alert-success"));
         return "redirect:/company/signup";
     }
 
@@ -86,9 +93,20 @@ public class CompanyController {
         return "redirect:/company/products";
     }
 
+    @GetMapping("/update/{id}")
+    public String editCompanyDetails(@PathVariable("id") int id, Model model){
+        model.addAttribute("company",companyRepository.findById(id));
+        return "company/update";
+    }
+
     @GetMapping("/products")
     public String getAllProducts(Model model,Principal principal)
     {
+        String currentUserName=principal.getName();
+        User CurrentUser=userRepository.findByName(currentUserName).get();
+        if(CurrentUser.getCompany()==null){
+            return "company/please_register";
+        }
         model.addAttribute("products",productService.getProductByCompany(principal));
         return "company/products";
     }

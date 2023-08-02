@@ -11,8 +11,14 @@
     <title>Title</title>
 </head>
 <body>
-<section>
-    <h1>Welcome <span th:text="${user.name}"></span></h1>
-</section>
+    <section>
+        <div class="text-center">
+            <h1>Please register the company </h1>
+            <div id="register-link">
+                Click here to
+                <a href="#" th:href="@{/company/signup}" class="text-info"> Register</a>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

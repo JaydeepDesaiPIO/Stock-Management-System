@@ -11,7 +11,7 @@ public interface UserService {
     public User addUser(User user);
     public List<User> getAllUsers();
     User findById(int id);
-    User update(User user, int id, BindingResult bindingResult);
+    void validateUserForUpdate(User user, int id, BindingResult bindingResult);
     Optional<User> findByName(String name);
 
     boolean userExists(String name);
@@ -27,4 +27,6 @@ public interface UserService {
     void isUserValid(User user, BindingResult bindingResult);
 
     void deleteUserById(int id);
+
+    void updateUser(User user, int id);
 }

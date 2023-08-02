@@ -21,14 +21,26 @@ public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public Company saveCompany(Company company) {
-        return companyRepository.save(company);
+    public void saveCompany(Company company, Principal principal) {
+        companyRepository.save(company);
+        String currentUserName=principal.getName();
+        User CurrentUser=userRepository.findByName(currentUserName).get();
+        CurrentUser.setCompany(company);
+        userRepository.save(CurrentUser);
     }
 
     @Override
     public Optional<Company> checkCompany(String name) {
         return companyRepository.findByCompanyName(name);
+    }
+
+    @Override
+    public Optional<Company> findCompanyByContact(String contactNo) {
+        return companyRepository.findByContactNo(contactNo);
     }
 
     @Override
@@ -44,11 +56,15 @@ public class CompanyServiceImpl implements CompanyService {
             if(StringUtils.isBlank(company.getContactNo())){
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact can not be blank"));
             }
-            if(company.getContactNo()!=null && !company.getContactNo().matches("^[0-9].{10}+$")) {
+            if(company.getContactNo()!=null && !company.getContactNo().matches("^[0-9].{9}+$")) {
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact must be of 10 digits"));
             }
             if(StringUtils.isBlank(company.getCompanyAddress())){
                 bindingResult.addError(new FieldError("company", "companyAddress", "Address can not be blank"));
+            }
+            if(findCompanyByContact(company.getContactNo()).isPresent()){
+                bindingResult.addError(new FieldError("company", "contactNo", "Contact already in use"));
+
             }
         }
     }

@@ -32,7 +32,7 @@
                                    class="form-control"
                                    th:field = "*{email}"
                                    placeholder="Enter Email"
-                                   name="address" th:errorClass="is-invalid"
+                                   name="email" th:errorClass="is-invalid"
                             >
                             <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback">
                             </p>
@@ -42,8 +42,8 @@
                             <input type="text"
                                    class="form-control"
                                    th:field = "*{contact}"
-                                   placeholder="Enter Address"
-                                   name="address" th:errorClass="is-invalid"
+                                   placeholder="Enter contact"
+                                   name="contact" th:errorClass="is-invalid"
                             >
                             <p th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}" class="invalid-feedback">
                             </p>

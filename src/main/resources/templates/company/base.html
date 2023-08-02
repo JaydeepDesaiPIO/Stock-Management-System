@@ -49,7 +49,7 @@
 
             <a href="#" class="item"> <i class="fa-solid fa-house"></i> Home</a>
             <a href="#" class="item"> <i class="fa-sharp fa-solid fa-bag-shopping"></i> Products</a>
-            <a href="#" class="item"> <i class="fa-solid fa-cart-shopping"></i> My Cart</a>
+            <a href="#" th:href="@{/company/update/{id} (id=${currentCompany.id})}" class="item"> <i class="fa-solid fa-cart-shopping"></i> Update Company</a>
             <a href="#" class="item"> <i class="fa-solid fa-user"></i>  My Profile</a>
             <a href="#" class="item"> <i class="fa-solid fa-arrow-right-from-arc"></i> Logout</a>
             <div class="divider"></div>

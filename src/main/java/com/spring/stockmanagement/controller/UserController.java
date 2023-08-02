@@ -42,7 +42,7 @@ public class UserController {
     @Autowired
     private MyCartService myCartService;
 
-    @ModelAttribute("user")
+    @ModelAttribute("currentUser")
     public User getUser(Principal principal)
     {
         String currentUserName = principal.getName();
@@ -51,10 +51,7 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public String userDashboard(Model model, Principal principal) {
-        String currentUserName = principal.getName();
-        User CurrentUser = userRepository.findByName(currentUserName).get();
-        model.addAttribute("user", CurrentUser);
+    public String userDashboard() {
         return "user/user_dashboard";
     }
 
@@ -71,13 +68,14 @@ public class UserController {
                              Model model)
     {
         // save updated user
-        userService.update(user,id,bindingResult);
+        User user1=user;
+        userService.validateUserForUpdate(user,id,bindingResult);
         if(bindingResult.hasErrors())
         {
             model.addAttribute(user);
             return "user/edit_user";
         }
-
+        userService.updateUser(user,id);
         return "redirect:/user/";
     }
 

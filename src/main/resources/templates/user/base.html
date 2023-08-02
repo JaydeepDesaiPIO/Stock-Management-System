@@ -41,7 +41,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav text-uppercase me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" th:text="${user.name}" href="#"></a>
+                            <a class="nav-link" th:text="${currentUser.name}" href="#"></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/logout}" href="#">Logout</a>
@@ -59,7 +59,7 @@
             <a href="#" th:href="@{/user/}" class="item"> <i class="fa-solid fa-house"></i> Home</a>
             <a href="#" th:href="@{/user/products}" class="item"> <i class="fa-sharp fa-solid fa-bag-shopping"></i> Products</a>
             <a href="#" th:href="@{/user/mycart}" class="item"> <i class="fa-solid fa-cart-shopping"></i> My Cart</a>
-            <a href="#" th:href = "@{/user/edit/{id}(id=${user.id})}" class="item"> <i class="fa-solid fa-user"></i>  My Profile</a>
+            <a href="#" th:href = "@{/user/edit/{id}(id=${currentUser.id})}" class="item"> <i class="fa-solid fa-user"></i>  My Profile</a>
             <a href="#" th:href="@{/logout}" class="item"> <i class="fa-solid fa-arrow-right-from-arc"></i> Logout</a>
             <div class="divider"></div>
         </div>

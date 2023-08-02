@@ -3,6 +3,7 @@ package com.spring.stockmanagement.controller;
 import com.spring.stockmanagement.Enum.Role;
 import com.spring.stockmanagement.entities.Company;
 import com.spring.stockmanagement.entities.User;
+import com.spring.stockmanagement.helper.EmailSenderService;
 import com.spring.stockmanagement.helper.Message;
 import com.spring.stockmanagement.repositories.CompanyRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
@@ -36,6 +37,9 @@ public class HomeController {
     @Autowired
     private CompanyRepository companyRepository;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
     @ModelAttribute("roles")
     public List<Role> allRoles()
     {
@@ -62,12 +66,12 @@ public class HomeController {
     public String userRegister(@ModelAttribute("user") User user, BindingResult bindingResult, Model model, HttpSession session)
     {
         userService.isUserValid(user,bindingResult);
-
         if(bindingResult.hasErrors())
         {
             model.addAttribute(user);
             return "user_signup";
         }
+        emailSenderService.sendSimpleEmail("trail8385@gmail.com","Hi "+user.getName()+", You have Successfully registered to SMS, thanks for joining","Successful Registration");
         userService.addUser(user);
         model.addAttribute("user",new User());
         session.setAttribute("message", new Message("Successfully Registered", "alert-success"));

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user, int id, BindingResult bindingResult) {
+    public void validateUserForUpdate(User user, int id, BindingResult bindingResult) {
         User existingUser = userRepository.findById(id).get();
         if (user != null) {
 
@@ -50,8 +50,6 @@ public class UserServiceImpl implements UserService {
             if(!existingUser.getEmail().equalsIgnoreCase(user.getEmail()) && userExistByEmail(user.getEmail())) {
                 bindingResult.addError(new FieldError("user","email","Email already in use"));
             }
-            else { existingUser.setEmail(user.getEmail());}
-
             if(StringUtils.isBlank(user.getAddress())) {
                 bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));
             }
@@ -66,9 +64,15 @@ public class UserServiceImpl implements UserService {
                 bindingResult.addError(new FieldError("user", "contact", "Contact already in exist"));
             }
         }
-            existingUser.setAddress(user.getAddress());
-            existingUser.setContact(user.getContact());
-            return userRepository.save(existingUser);
+    }
+
+    @Override
+    public void updateUser(User user, int id) {
+        User existingUser = userRepository.findById(id).get();
+        existingUser.setContact(user.getContact());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setAddress(user.getAddress());
+        userRepository.save(existingUser);
     }
 
     @Override
@@ -138,6 +142,9 @@ public class UserServiceImpl implements UserService {
             if (userExistByEmail(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email already in use"));
             }
+            if(userExistByContact(user.getContact())){
+                bindingResult.addError(new FieldError("user", "contact", "Contact already in use"));
+            }
         }
     }
 
@@ -145,6 +152,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
     }
+
 }
 
 

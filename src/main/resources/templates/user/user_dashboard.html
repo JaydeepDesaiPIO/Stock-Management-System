@@ -12,8 +12,8 @@
 </head>
 <body>
 <section>
-    <h1>Welcome <span th:text="${user.name}"></span></h1>
-    <a th:href = "@{/user/edit/{id}(id=${user.id})}"
+    <h1>Welcome <span th:text="${currentUser.name}"></span></h1>
+    <a th:href = "@{/user/edit/{id}(id=${currentUser.id})}"
        class = "btn btn-info">Update</a>
 </section>
 </body>
