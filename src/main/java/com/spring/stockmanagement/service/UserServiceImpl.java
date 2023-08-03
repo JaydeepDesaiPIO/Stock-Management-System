@@ -1,7 +1,15 @@
 package com.spring.stockmanagement.service;
 
+import com.spring.stockmanagement.entities.Company;
+import com.spring.stockmanagement.entities.MyCart;
+import com.spring.stockmanagement.entities.Product;
 import com.spring.stockmanagement.entities.User;
+import com.spring.stockmanagement.repositories.CompanyRepository;
+import com.spring.stockmanagement.repositories.MyCartRepository;
+import com.spring.stockmanagement.repositories.ProductRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
+import com.spring.stockmanagement.service.Interface.MyCartService;
+import com.spring.stockmanagement.service.Interface.ProductService;
 import com.spring.stockmanagement.service.Interface.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +30,17 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
+    private MyCartRepository myCartRepository;
 
     @Override
     public User addUser(User user) {
@@ -60,6 +80,9 @@ public class UserServiceImpl implements UserService {
             {
                 bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
+            if (user.getContact() != null && !user.getContact().matches("^[0-9].{9}+$")) {
+                bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
+            }
             if(!existingUser.getContact().equalsIgnoreCase(user.getContact()) && userExistByContact(user.getContact())){
                 bindingResult.addError(new FieldError("user", "contact", "Contact already in exist"));
             }
@@ -73,6 +96,32 @@ public class UserServiceImpl implements UserService {
         existingUser.setEmail(user.getEmail());
         existingUser.setAddress(user.getAddress());
         userRepository.save(existingUser);
+    }
+
+    @Override
+    public void setCompany(int id, Principal principal) {
+        Company company=companyRepository.findById(id).get();
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        CurrentUser.setCompany(company);
+        userRepository.save(CurrentUser);
+    }
+
+    @Override
+    public void removeFromCart(int id, Principal principal) {
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        List<MyCart> myCartList=myCartRepository.getCartByUser(CurrentUser);
+        for(MyCart myCart: myCartList)
+        {
+            if(myCart.getId()==id)
+            {
+                Product product=productRepository.findById(myCart.getProduct().getProductId()).get();
+                product.setProductQuantity(product.getProductQuantity()+myCart.getProductCount());
+                productRepository.save(product);
+                myCartRepository.deleteById(id);
+            }
+        }
     }
 
     @Override
@@ -124,7 +173,10 @@ public class UserServiceImpl implements UserService {
             if (StringUtils.isBlank(user.getContact())) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
-            if (user.getContact() != null && !user.getContact().matches("^[0-9].{9}+$")) {
+            if (user.getContact() != null && !user.getContact().matches("^[0-9]+$")) {
+                bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
+            }
+            if (user.getContact().length() != 10) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
             }
             if (StringUtils.isBlank(user.getAddress())) {

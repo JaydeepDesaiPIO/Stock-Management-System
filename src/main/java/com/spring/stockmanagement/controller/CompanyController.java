@@ -71,31 +71,29 @@ public class CompanyController {
             return "companySignup";
         }
         companyService.saveCompany(company,principal);
+        model.addAttribute("company",new Company());
         session.setAttribute("message", new Message("Registration Successful", "alert-success"));
         return "redirect:/company/signup";
     }
 
-    @GetMapping("/products/add")
-    public String addProduct(Model model)
-    {
-        Product product=new Product();
-        model.addAttribute("product",product);
-        return "company/add";
-    }
-
-    @PostMapping("/products")
-    public String saveProduct(@ModelAttribute("product")Product product,Principal principal)
-    {
-        String currentUserName=principal.getName();
-        User CurrentUser=userRepository.findByName(currentUserName).get();
-        product.setCompany(CurrentUser.getCompany());
-        productService.addProduct(product);
-        return "redirect:/company/products";
-    }
-
     @GetMapping("/update/{id}")
     public String editCompanyDetails(@PathVariable("id") int id, Model model){
-        model.addAttribute("company",companyRepository.findById(id));
+        model.addAttribute("company",companyRepository.findById(id).get());
+        return "company/update";
+    }
+
+    @PostMapping("/{id}")
+    public String saveUpdatedCompany(@PathVariable ("id") int id, @ModelAttribute("company") Company company, BindingResult bindingResult,Model model,HttpSession session)
+    {
+        companyService.validateCompanyForUpdate(id,company,bindingResult);
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("company",company);
+            return "company/update";
+        }
+        companyService.updateCompany(company,id);
+        model.addAttribute("company",new Company());
+        session.setAttribute("message", new Message("Updated Successfully!!", "alert-success"));
         return "company/update";
     }
 
@@ -109,5 +107,57 @@ public class CompanyController {
         }
         model.addAttribute("products",productService.getProductByCompany(principal));
         return "company/products";
+    }
+    @GetMapping("/products/add")
+    public String addProduct(Model model)
+    {
+        Product product=new Product();
+        model.addAttribute("product",product);
+        return "company/add";
+    }
+
+    @PostMapping("/products")
+    public String saveProduct(@ModelAttribute("product")Product product,BindingResult bindingResult,Model model,Principal principal)
+    {
+        productService.validateProduct(product,bindingResult,principal);
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("product",product);
+            return "company/add";
+        }
+        productService.addProduct(product,principal);
+        return "redirect:/company/products";
+    }
+
+    @GetMapping("/product/update/{id}")
+    public String updateProduct(@PathVariable("id") int id, Model model)
+    {
+        Product product=productService.getProductById(id);
+        model.addAttribute("product",product);
+        return "company/update_product";
+    }
+
+    @PostMapping("/product/{id}")
+    public String saveUpdatedProduct(@PathVariable("id") int id,@ModelAttribute ("product") Product product,BindingResult bindingResult,
+                                     Model model,HttpSession session,Principal principal)
+    {
+        productService.validateUpdatedProduct(id,product,bindingResult,principal);
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("product",product);
+            return "company/update_product";
+        }
+        productService.updateProduct(id,product);
+        session.setAttribute("message", new Message("Updated Successfully!!", "alert-success"));
+        model.addAttribute("product",product);
+        return "company/update_product";
+    }
+
+    @GetMapping("/product/delete/{id}")
+    public String deleteProduct(@PathVariable("id") int id,HttpSession session)
+    {
+        productService.deleteProductById(id);
+        session.setAttribute("message", new Message("Updated Successfully!!", "alert-success"));
+        return "redirect:/company/products";
     }
 }

@@ -31,11 +31,8 @@
       <td th:text = "${company.companyAddress}"></td>
       <td th:text = "${company.contactNo}"></td>
       <td>
-<!--        <a th:href = "@{/admin/users/edit/{id}(id=${user.id})}"-->
-<!--           class = "btn btn-primary">Update</a>-->
-
-        <!--                        <a th:href = "@{/admin/books/{id}(id=${book.id})}"-->
-        <!--                           class = "btn btn-danger">Delete</a>-->
+          <a th:href = "@{/admin/company/delete/{id} (id=${company.id})}"
+             class = "btn btn-danger">Delete</a>
       </td>
     </tr>
     </tbody>

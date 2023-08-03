@@ -3,6 +3,7 @@ package com.spring.stockmanagement.service.Interface;
 import com.spring.stockmanagement.entities.User;
 import org.springframework.validation.BindingResult;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +30,8 @@ public interface UserService {
     void deleteUserById(int id);
 
     void updateUser(User user, int id);
+
+    void setCompany(int id, Principal principal);
+
+    void removeFromCart(int id, Principal principal);
 }

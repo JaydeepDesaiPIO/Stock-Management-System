@@ -34,7 +34,7 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private List<User> user;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Product> product;
 
     //constructor

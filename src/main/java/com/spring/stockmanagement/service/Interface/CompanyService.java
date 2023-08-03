@@ -18,4 +18,10 @@ public interface CompanyService {
     void validateCompany(Company company, BindingResult bindingResult);
 
     List<Company> getAllCompany();
+
+    void validateCompanyForUpdate(int id, Company company, BindingResult bindingResult);
+
+    void updateCompany(Company company, int id);
+
+    void deleteCompanyById(int id);
 }

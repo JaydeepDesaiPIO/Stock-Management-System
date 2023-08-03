@@ -24,18 +24,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav text-uppercase">
+                    <ul class="navbar-nav text-uppercase me-auto mb-2 mb-lg-0">
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" th:text="${user.name}" href="#"></a>-->
+<!--                        </li>-->
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/home/signin}" href="#">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/home/signup}" href="#">Signup</a>
+                            <a class="nav-link" th:href="@{/logout}" href="#">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -47,11 +41,11 @@
         <!--sidebar-->
         <div class="sidebar">
 
-            <a href="#" class="item"> <i class="fa-solid fa-house"></i> Home</a>
-            <a href="#" class="item"> <i class="fa-sharp fa-solid fa-bag-shopping"></i> Products</a>
+            <a href="#" th:href="@{/company/}" class="item"> <i class="fa-solid fa-house"></i> Home</a>
+            <a href="#" th:href="@{/company/signup}"  class="item"> <i class="fa-solid fa-user"></i>  Register Company</a>
+            <a href="#" th:href="@{/company/products}" class="item"> <i class="fa-sharp fa-solid fa-bag-shopping"></i> Products</a>
             <a href="#" th:href="@{/company/update/{id} (id=${currentCompany.id})}" class="item"> <i class="fa-solid fa-cart-shopping"></i> Update Company</a>
-            <a href="#" class="item"> <i class="fa-solid fa-user"></i>  My Profile</a>
-            <a href="#" class="item"> <i class="fa-solid fa-arrow-right-from-arc"></i> Logout</a>
+            <a href="#" th:href="@{/logout}" class="item"> <i class="fa-solid fa-arrow-right-from-arc"></i> Logout</a>
             <div class="divider"></div>
         </div>
         <!--End sidebar-->

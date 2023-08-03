@@ -64,7 +64,6 @@ public class CompanyServiceImpl implements CompanyService {
             }
             if(findCompanyByContact(company.getContactNo()).isPresent()){
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact already in use"));
-
             }
         }
     }
@@ -72,5 +71,44 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getAllCompany() {
         return companyRepository.findAll();
+    }
+
+    @Override
+    public void validateCompanyForUpdate(int id, Company company, BindingResult bindingResult) {
+        Company existingCompany=companyRepository.findById(id).get();
+        if(company!=null) {
+            if (StringUtils.isBlank(company.getCompanyName())) {
+                bindingResult.addError(new FieldError("company", "companyName", "Company name cannot be blank"));
+            }
+            if (!existingCompany.getCompanyName().equalsIgnoreCase(company.getCompanyName()) && checkCompany(company.getCompanyName()).isPresent()) {
+                bindingResult.addError(new FieldError("company", "companyName", "Company already exist"));
+            }
+            if (StringUtils.isBlank(company.getContactNo())) {
+                bindingResult.addError(new FieldError("company", "contactNo", "Contact can not be blank"));
+            }
+            if (company.getContactNo() != null && !company.getContactNo().matches("^[0-9].{9}+$")) {
+                bindingResult.addError(new FieldError("company", "contactNo", "Contact must be of 10 digits"));
+            }
+            if (StringUtils.isBlank(company.getCompanyAddress())) {
+                bindingResult.addError(new FieldError("company", "companyAddress", "Address can not be blank"));
+            }
+            if (!existingCompany.getContactNo().equalsIgnoreCase(company.getContactNo()) && findCompanyByContact(company.getContactNo()).isPresent()) {
+                bindingResult.addError(new FieldError("company", "contactNo", "Contact already in use"));
+            }
+        }
+    }
+
+    @Override
+    public void updateCompany(Company company, int id) {
+        Company company1=companyRepository.findById(id).get();
+        company1.setCompanyName(company.getCompanyName());
+        company1.setCompanyAddress(company.getCompanyAddress());
+        company1.setContactNo(company.getContactNo());
+        companyRepository.save(company1);
+    }
+
+    @Override
+    public void deleteCompanyById(int id) {
+        companyRepository.deleteById(id);
     }
 }

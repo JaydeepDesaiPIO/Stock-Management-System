@@ -21,7 +21,10 @@
                        class="form-control"
                        th:field = "*{productName}"
                        placeholder="Enter Product Name"
-                       name="productName">
+                       name="productName"
+                       th:errorClass="is-invalid"
+                >
+                <p th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="invalid-feedback"></p>
             </div>
             <div class="form-group mb-3 " >
                 <label>Product Price</label>

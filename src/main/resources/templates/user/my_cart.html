@@ -34,7 +34,7 @@
             <td th:text = "${mycart.productCount}">
             </td>
             <td>
-                                <a href = "#"
+                                <a href = "#" th:href="@{/user/remove/{id} (id=${mycart.id})}"
                                    class = "btn btn-primary">Remove</a>
             </td>
         </tr>

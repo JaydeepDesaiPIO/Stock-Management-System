@@ -31,7 +31,7 @@
                     <td th:text = "${user.email}"></td>
                     <td th:text = "${user.address}"></td>
                     <td>
-                        <a th:href = "@{/admin/users/delete/{id}(id=${user.id})}"
+                        <a th:href = "@{/admin/user/delete/{id}(id=${user.id})}"
                            class = "btn btn-danger">Delete</a>
                     </td>
                 </tr>

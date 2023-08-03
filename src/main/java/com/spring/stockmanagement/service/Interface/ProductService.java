@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ProductService {
 
-    Product addProduct(Product product);
+    Product addProduct(Product product, Principal principal);
     List<Product> getAllProduct();
 
     List<Product> getProductByCompany(Principal principal);
@@ -25,4 +25,12 @@ public interface ProductService {
     void saveOrderItem(Product product, OrderItem orderItem, BindingResult bindingResult);
 
     void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session, BindingResult bindingResult);
+
+    void validateProduct(Product product, BindingResult bindingResult,Principal principal);
+
+    void validateUpdatedProduct(int id, Product product, BindingResult bindingResult, Principal principal);
+
+    void updateProduct(int id, Product product);
+
+    void deleteProductById(int id);
 }

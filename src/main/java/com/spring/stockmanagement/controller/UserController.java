@@ -24,23 +24,20 @@ public class UserController {
 
     @Autowired
     private ProductService productService;
-
-
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserService userService;
     @Autowired
     private MyCartRepository myCartRepository;
-
     @Autowired
     private MyCartService myCartService;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @ModelAttribute("currentUser")
     public User getUser(Principal principal)
@@ -65,10 +62,9 @@ public class UserController {
     public String updateBook(@PathVariable int id,
                              @ModelAttribute("user") User user,
                              BindingResult bindingResult,
-                             Model model)
+                             Model model,HttpSession session)
     {
         // save updated user
-        User user1=user;
         userService.validateUserForUpdate(user,id,bindingResult);
         if(bindingResult.hasErrors())
         {
@@ -76,13 +72,34 @@ public class UserController {
             return "user/edit_user";
         }
         userService.updateUser(user,id);
+        session.setAttribute("message", new Message("Updated successfully!!", "alert-success"));
         return "redirect:/user/";
     }
 
     @GetMapping("/products")
-    public String getAllProducts(Model model) {
-        model.addAttribute("products", productService.getAllProduct());
+    public String getAllProducts(Model model,Principal principal) {
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        if(CurrentUser.getCompany()==null)
+        {
+            return "user/message";
+        }
+        model.addAttribute("products", productService.getProductByCompany(principal));
         return "user/products";
+    }
+
+    @GetMapping("/selectCompany")
+    public String selectCompany(Model model)
+    {
+        model.addAttribute("companies",companyRepository.findAll());
+        return "user/select_company";
+    }
+
+    @GetMapping("/set/company/{id}")
+    public String setCompany(@PathVariable("id") int id,Principal principal)
+    {
+        userService.setCompany(id,principal);
+        return "redirect:/user/products";
     }
 
     @GetMapping("/order/{id}")
@@ -120,6 +137,10 @@ public class UserController {
         //set user to order
         order.setUser(CurrentUser);
 
+        Product product1=productService.getProductById(product.getProductId());
+        Company company=product1.getCompany();
+        company.getUser().add(CurrentUser);
+        companyRepository.save(company);
        // order.setOrderDate();
 
         orderRepository.save(order);
@@ -184,5 +205,11 @@ public class UserController {
             myCartRepository.deleteAll();
         }
         return "user/success";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String removeFromCart(@PathVariable("id") int id,Principal principal) {
+        userService.removeFromCart(id,principal);
+        return "redirect:/user/mycart";
     }
 }
