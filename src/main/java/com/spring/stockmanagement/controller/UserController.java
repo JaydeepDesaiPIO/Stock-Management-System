@@ -202,6 +202,10 @@ public class UserController {
             orders.setOrderItems(orderItemList);
             orderRepository.save(orders);
             orderItemRepository.save(orderItem);
+
+            Company company=companyRepository.findByCompanyName(mycart.getProduct().getCompany().getCompanyName()).get();
+            company.getUser().add(CurrentUser);
+            companyRepository.save(company);
             myCartRepository.deleteAll();
         }
         return "user/success";

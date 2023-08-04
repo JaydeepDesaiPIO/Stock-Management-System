@@ -31,7 +31,7 @@ public class Company {
 
     private String contactNo;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", orphanRemoval = true)
     private List<User> user;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)

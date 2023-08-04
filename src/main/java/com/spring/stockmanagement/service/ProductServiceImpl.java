@@ -88,6 +88,10 @@ public class ProductServiceImpl implements ProductService {
 
                 bindingResult.addError(new FieldError("mycart", "productCount", "only " + product1.getProductQuantity() + " are available"));
             }
+            if(myCart.getProductCount()<0) {
+
+                bindingResult.addError(new FieldError("mycart", "productCount", "Please input a correct value"));
+            }
             else {
                 product1.setProductQuantity(product1.getProductQuantity() - myCart.getProductCount());
                 myCart.setProduct(product1);
@@ -114,6 +118,14 @@ public class ProductServiceImpl implements ProductService {
                     bindingResult.addError(new FieldError("product", "productName", "Product already exist"));
                 }
             }
+            if(product.getProductQuantity()<=0)
+            {
+                bindingResult.addError(new FieldError("product", "productQuantity", "Please input a correct value"));
+            }
+            if(product.getProductPrice()<=0)
+            {
+                bindingResult.addError(new FieldError("product", "productPrice", "Please input a correct value"));
+            }
         }
     }
 
@@ -131,6 +143,14 @@ public class ProductServiceImpl implements ProductService {
                 {
                     bindingResult.addError(new FieldError("product", "productName", "Product already exist"));
                 }
+            }
+            if(product.getProductQuantity()<=0)
+            {
+                bindingResult.addError(new FieldError("product", "productQuantity", "Please input a correct value"));
+            }
+            if(product.getProductPrice()<=0)
+            {
+                bindingResult.addError(new FieldError("product", "productPrice", "Please input a correct value"));
             }
         }
     }

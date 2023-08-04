@@ -12,10 +12,10 @@ public class MyCart {
 
     private int productCount;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Product product;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private User user;
 
     public int getId() {
