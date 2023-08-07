@@ -4,9 +4,7 @@ package com.spring.stockmanagement.entities;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
-
 import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.LongType;
@@ -22,7 +20,7 @@ public class SequenceGenerator extends SequenceStyleGenerator {
     private String valuePrefix;
 
     public static final String NUMBER_FORMAT_PARAMETER = "numberFormat";
-    public static final String NUMBER_FORMAT_DEFAULT="%d";
+    public static final String NUMBER_FORMAT_DEFAULT = "%d";
     private String numberFormat;
 
     @Override
@@ -34,6 +32,6 @@ public class SequenceGenerator extends SequenceStyleGenerator {
 
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
-        return valuePrefix+String.format(numberFormat, super.generate(session,object));
+        return valuePrefix + String.format(numberFormat, super.generate(session, object));
     }
 }

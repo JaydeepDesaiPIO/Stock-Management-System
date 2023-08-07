@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -34,7 +33,7 @@ public class Company {
     @OneToMany(mappedBy = "company", orphanRemoval = true)
     private List<User> user;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Product> product;
 
     //constructor

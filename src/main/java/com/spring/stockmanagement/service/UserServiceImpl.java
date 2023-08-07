@@ -8,7 +8,6 @@ import com.spring.stockmanagement.repositories.CompanyRepository;
 import com.spring.stockmanagement.repositories.MyCartRepository;
 import com.spring.stockmanagement.repositories.ProductRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
-import com.spring.stockmanagement.service.Interface.MyCartService;
 import com.spring.stockmanagement.service.Interface.ProductService;
 import com.spring.stockmanagement.service.Interface.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return  userRepository.save(user);
+        return userRepository.save(user);
 
     }
 
@@ -64,26 +63,25 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findById(id).get();
         if (user != null) {
 
-            if(StringUtils.isBlank(user.getEmail())) {
+            if (StringUtils.isBlank(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
             }
-            if(!existingUser.getEmail().equalsIgnoreCase(user.getEmail()) && userExistByEmail(user.getEmail())) {
-                bindingResult.addError(new FieldError("user","email","Email already in use"));
+            if (!existingUser.getEmail().equalsIgnoreCase(user.getEmail()) && userExistByEmail(user.getEmail())) {
+                bindingResult.addError(new FieldError("user", "email", "Email already in use"));
             }
-            if(StringUtils.isBlank(user.getAddress())) {
+            if (StringUtils.isBlank(user.getAddress())) {
                 bindingResult.addError(new FieldError("user", "address", "Address can not be blank"));
             }
             if (user.getAddress() != null && !user.getAddress().matches("^[0-9a-zA-Z\\s,-]+$")) {
                 bindingResult.addError(new FieldError("user", "address", "Please write correct address"));
             }
-            if(StringUtils.isBlank(user.getContact()))
-            {
+            if (StringUtils.isBlank(user.getContact())) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact can not be blank"));
             }
             if (user.getContact() != null && !user.getContact().matches("^[0-9].{9}+$")) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact must be of 10 digits"));
             }
-            if(!existingUser.getContact().equalsIgnoreCase(user.getContact()) && userExistByContact(user.getContact())){
+            if (!existingUser.getContact().equalsIgnoreCase(user.getContact()) && userExistByContact(user.getContact())) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact already in exist"));
             }
         }
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setCompany(int id, Principal principal) {
-        Company company=companyRepository.findById(id).get();
+        Company company = companyRepository.findById(id).get();
         String currentUserName = principal.getName();
         User CurrentUser = userRepository.findByName(currentUserName).get();
         CurrentUser.setCompany(company);
@@ -109,19 +107,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeFromCart(int id, Principal principal) {
-        String currentUserName = principal.getName();
-        User CurrentUser = userRepository.findByName(currentUserName).get();
-        List<MyCart> myCartList=myCartRepository.getCartByUser(CurrentUser);
-        for(MyCart myCart: myCartList)
-        {
-            if(myCart.getId()==id)
-            {
-                Product product=productRepository.findById(myCart.getProduct().getProductId()).get();
-                product.setProductQuantity(product.getProductQuantity()+myCart.getProductCount());
-                productRepository.save(product);
-                myCartRepository.deleteById(id);
-            }
-        }
+
+        MyCart myCart = myCartRepository.findById(id).get();
+        Product product = productRepository.findById(myCart.getProduct().getProductId()).get();
+        product.setProductQuantity(product.getProductQuantity() + myCart.getProductCount());
+        productRepository.save(product);
+        myCartRepository.deleteById(id);
+
+//        String currentUserName = principal.getName();
+//        User CurrentUser = userRepository.findByName(currentUserName).get();
+//        List<MyCart> myCartList=myCartRepository.getCartByUser(CurrentUser);
+//        for(MyCart myCart: myCartList)
+//        {
+//            if(myCart.getId()==id)
+//            {
+//                Product product=productRepository.findById(myCart.getProduct().getProductId()).get();
+//                product.setProductQuantity(product.getProductQuantity()+myCart.getProductCount());
+//                productRepository.save(product);
+//
+//            }
+//        }
     }
 
     @Override
@@ -132,7 +137,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userExists(String name) {
         Optional<User> byName = userRepository.findByName(name);
-        if(byName.isPresent()){
+        if (byName.isPresent()) {
             return true;
         }
         return false;
@@ -194,7 +199,7 @@ public class UserServiceImpl implements UserService {
             if (userExistByEmail(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email already in use"));
             }
-            if(userExistByContact(user.getContact())){
+            if (userExistByContact(user.getContact())) {
                 bindingResult.addError(new FieldError("user", "contact", "Contact already in use"));
             }
         }

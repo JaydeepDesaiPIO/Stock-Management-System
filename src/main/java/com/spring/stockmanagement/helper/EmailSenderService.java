@@ -13,8 +13,8 @@ public class EmailSenderService {
 
     public void sendSimpleEmail(String toEmail,
                                 String body,
-                                String subject){
-        SimpleMailMessage mailMessage=new SimpleMailMessage();
+                                String subject) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom("trail8385@gmail.com");
         mailMessage.setTo(toEmail);

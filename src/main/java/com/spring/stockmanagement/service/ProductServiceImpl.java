@@ -30,8 +30,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product addProduct(Product product, Principal principal) {
-        String currentUserName=principal.getName();
-        User CurrentUser=userRepository.findByName(currentUserName).get();
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
         product.setCompany(CurrentUser.getCompany());
         return productRepository.save(product);
     }
@@ -43,9 +43,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductByCompany(Principal principal) {
-        String currentUserName=principal.getName();
-        User CurrentUser=userRepository.findByName(currentUserName).get();
-        Company company=CurrentUser.getCompany();
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        Company company = CurrentUser.getCompany();
         return productRepository.findProductByCompany(company);
     }
 
@@ -66,14 +66,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveOrderItem(Product product, OrderItem orderItem, BindingResult bindingResult) {
-        if(productRepository.existsById(product.getProductId())){
-            Product product1=productRepository.findById(product.getProductId()).get();
-            if(orderItem.getQuantity()>product1.getProductQuantity() || (product1.getProductQuantity()<=0)) {
+        if (productRepository.existsById(product.getProductId())) {
+            Product product1 = productRepository.findById(product.getProductId()).get();
+            if (orderItem.getQuantity() > product1.getProductQuantity() || (product1.getProductQuantity() <= 0)) {
                 bindingResult.addError(new FieldError("orderItem", "quantity", "only " + product1.getProductQuantity() + " are available"));
-            }
-            else {
-                product1.setProductQuantity(product1.getProductQuantity()-orderItem.getQuantity());
-                orderItem.setProduct(product1);
+            } else {
+                product1.setProductQuantity(product1.getProductQuantity() - orderItem.getQuantity());
+                orderItem.setProduct(product1.getProductName());
+                orderItem.setCompany(product1.getCompany().getCompanyName());
                 orderItem.setPrice(product1.getProductPrice());
                 productRepository.save(product1);
             }
@@ -82,48 +82,53 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session, BindingResult bindingResult) {
-        if(productRepository.findById(product.getProductId()).isPresent()) {
+        if (productRepository.findById(product.getProductId()).isPresent()) {
             Product product1 = productRepository.findById(product.getProductId()).get();
-            if((product1.getProductQuantity()>0) && (product1.getProductQuantity()<myCart.getProductCount())) {
+            if ((product1.getProductQuantity() > 0) && (product1.getProductQuantity() < myCart.getProductCount())) {
 
                 bindingResult.addError(new FieldError("mycart", "productCount", "only " + product1.getProductQuantity() + " are available"));
             }
-            if(myCart.getProductCount()<0) {
+            if (myCart.getProductCount() < 0) {
 
                 bindingResult.addError(new FieldError("mycart", "productCount", "Please input a correct value"));
-            }
-            else {
+            } else {
+                int count = 0;
                 product1.setProductQuantity(product1.getProductQuantity() - myCart.getProductCount());
-                myCart.setProduct(product1);
                 productRepository.save(product1);
-                String currentUserName=principal.getName();
-                User currentUser= userRepository.findByName(currentUserName).get();
+                String currentUserName = principal.getName();
+                User currentUser = userRepository.findByName(currentUserName).get();
                 myCart.setUser(currentUser);
-                myCartRepository.save(myCart);
+                List<MyCart> myCartList = myCartRepository.getCartByUser(currentUser);
+                for (MyCart myCart1 : myCartList) {
+                    if (myCart1.getProduct().equals(product1)) {
+                        myCart1.setProductCount(myCart1.getProductCount() + myCart.getProductCount());
+                        myCartRepository.save(myCart1);
+                        count++;
+                    }
+                }
+                if (count == 0) {
+                    myCart.setProduct(product1);
+                    myCartRepository.save(myCart);
+                }
             }
         }
     }
 
     @Override
-    public void validateProduct(Product product, BindingResult bindingResult,Principal principal) {
-        if(product!=null)
-        {
+    public void validateProduct(Product product, BindingResult bindingResult, Principal principal) {
+        if (product != null) {
             if (StringUtils.isBlank(product.getProductName())) {
                 bindingResult.addError(new FieldError("product", "productName", "Product name cannot be blank"));
             }
-            for(Product productInList: getProductByCompany(principal))
-            {
-                if(product.getProductName().equalsIgnoreCase(productInList.getProductName()))
-                {
+            for (Product productInList : getProductByCompany(principal)) {
+                if (product.getProductName().equalsIgnoreCase(productInList.getProductName())) {
                     bindingResult.addError(new FieldError("product", "productName", "Product already exist"));
                 }
             }
-            if(product.getProductQuantity()<=0)
-            {
+            if (product.getProductQuantity() <= 0) {
                 bindingResult.addError(new FieldError("product", "productQuantity", "Please input a correct value"));
             }
-            if(product.getProductPrice()<=0)
-            {
+            if (product.getProductPrice() <= 0) {
                 bindingResult.addError(new FieldError("product", "productPrice", "Please input a correct value"));
             }
         }
@@ -131,25 +136,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void validateUpdatedProduct(int id, Product product, BindingResult bindingResult, Principal principal) {
-        Product existingProduct=getProductById(id);
-        if(product!=null)
-        {
+        Product existingProduct = getProductById(id);
+        if (product != null) {
             if (StringUtils.isBlank(product.getProductName())) {
                 bindingResult.addError(new FieldError("product", "productName", "Product name cannot be blank"));
             }
-            for(Product productInList: getProductByCompany(principal))
-            {
-                if(!(existingProduct.getProductName().equalsIgnoreCase(product.getProductName())) && product.getProductName().equalsIgnoreCase(productInList.getProductName()))
-                {
+            for (Product productInList : getProductByCompany(principal)) {
+                if (!(existingProduct.getProductName().equalsIgnoreCase(product.getProductName())) && product.getProductName().equalsIgnoreCase(productInList.getProductName())) {
                     bindingResult.addError(new FieldError("product", "productName", "Product already exist"));
                 }
             }
-            if(product.getProductQuantity()<=0)
-            {
+            if (product.getProductQuantity() <= 0) {
                 bindingResult.addError(new FieldError("product", "productQuantity", "Please input a correct value"));
             }
-            if(product.getProductPrice()<=0)
-            {
+            if (product.getProductPrice() <= 0) {
                 bindingResult.addError(new FieldError("product", "productPrice", "Please input a correct value"));
             }
         }
@@ -157,7 +157,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(int id, Product product) {
-        Product existingProduct=getProductById(id);
+        Product existingProduct = getProductById(id);
         existingProduct.setProductName(product.getProductName());
         existingProduct.setProductQuantity(product.getProductQuantity());
         existingProduct.setProductPrice(product.getProductPrice());

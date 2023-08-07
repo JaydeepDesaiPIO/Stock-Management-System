@@ -1,16 +1,12 @@
 package com.spring.stockmanagement.entities;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.spring.stockmanagement.Enum.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GeneratorType;
-import org.springframework.jca.cci.object.SimpleRecordOperation;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.util.ArrayList;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -39,9 +35,15 @@ public class User {
 
     private String address;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MyCart> myCart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Orders> orders;
 
     public String toString() {
         return "User{" +
@@ -133,5 +135,13 @@ public class User {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<MyCart> getMyCart() {
+        return myCart;
+    }
+
+    public void setMyCart(List<MyCart> myCart) {
+        this.myCart = myCart;
     }
 }

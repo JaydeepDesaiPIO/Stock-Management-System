@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class Orders {
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "order_gen")
-    @GenericGenerator(name = "order_gen", strategy = "com.spring.stockmanagement.entities.SequenceGenerator",parameters = {
+    @GenericGenerator(name = "order_gen", strategy = "com.spring.stockmanagement.entities.SequenceGenerator", parameters = {
             @Parameter(name = SequenceGenerator.INCREMENT_PARAM, value = "1"),
             @Parameter(name = SequenceGenerator.VALUE_PREFIX_PARAMETER, value = "ORD"),
             @Parameter(name = SequenceGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d")
@@ -31,11 +33,11 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "orders")
-    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
 //getter setter
 

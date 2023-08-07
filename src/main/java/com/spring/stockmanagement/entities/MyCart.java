@@ -1,7 +1,6 @@
 package com.spring.stockmanagement.entities;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 public class MyCart {
@@ -12,10 +11,10 @@ public class MyCart {
 
     private int productCount;
 
-    @OneToOne
+    @ManyToOne
     private Product product;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
     public int getId() {

@@ -1,6 +1,7 @@
 package com.spring.stockmanagement.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -21,6 +22,8 @@ public class Product {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MyCart> myCart;
 
     //constructor
 
@@ -82,5 +85,13 @@ public class Product {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<MyCart> getMyCart() {
+        return myCart;
+    }
+
+    public void setMyCart(List<MyCart> myCart) {
+        this.myCart = myCart;
     }
 }

@@ -13,9 +13,11 @@ import java.util.Optional;
 public interface ProductService {
 
     Product addProduct(Product product, Principal principal);
+
     List<Product> getAllProduct();
 
     List<Product> getProductByCompany(Principal principal);
+
     Product getProductById(int id);
 
     Optional<Product> isProductExits(String productName);
@@ -26,7 +28,7 @@ public interface ProductService {
 
     void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session, BindingResult bindingResult);
 
-    void validateProduct(Product product, BindingResult bindingResult,Principal principal);
+    void validateProduct(Product product, BindingResult bindingResult, Principal principal);
 
     void validateUpdatedProduct(int id, Product product, BindingResult bindingResult, Principal principal);
 

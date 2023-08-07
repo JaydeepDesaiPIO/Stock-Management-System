@@ -21,10 +21,10 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         if (roles.contains("ROLE_ADMIN")) {
             response.sendRedirect("/admin/");
         }
-        if(roles.contains("ROLE_USER")) {
+        if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/user/");
         }
-        if(roles.contains("ROLE_STOCKHOLDER")) {
+        if (roles.contains("ROLE_STOCKHOLDER")) {
             response.sendRedirect("/company/");
         }
 

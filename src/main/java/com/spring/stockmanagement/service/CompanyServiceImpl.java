@@ -1,5 +1,6 @@
 package com.spring.stockmanagement.service;
 
+import com.spring.stockmanagement.Enum.Role;
 import com.spring.stockmanagement.entities.Company;
 import com.spring.stockmanagement.entities.User;
 import com.spring.stockmanagement.repositories.CompanyRepository;
@@ -27,8 +28,8 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void saveCompany(Company company, Principal principal) {
         companyRepository.save(company);
-        String currentUserName=principal.getName();
-        User CurrentUser=userRepository.findByName(currentUserName).get();
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
         CurrentUser.setCompany(company);
         userRepository.save(CurrentUser);
     }
@@ -45,24 +46,23 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void validateCompany(Company company, BindingResult bindingResult) {
-        if(company!=null)
-        {
-            if(StringUtils.isBlank(company.getCompanyName())){
-                bindingResult.addError(new FieldError("company","companyName","Company name cannot be blank"));
+        if (company != null) {
+            if (StringUtils.isBlank(company.getCompanyName())) {
+                bindingResult.addError(new FieldError("company", "companyName", "Company name cannot be blank"));
             }
-            if(checkCompany(company.getCompanyName()).isPresent()){
-                bindingResult.addError(new FieldError("company","companyName","Company already exist"));
+            if (checkCompany(company.getCompanyName()).isPresent()) {
+                bindingResult.addError(new FieldError("company", "companyName", "Company already exist"));
             }
-            if(StringUtils.isBlank(company.getContactNo())){
+            if (StringUtils.isBlank(company.getContactNo())) {
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact can not be blank"));
             }
-            if(company.getContactNo()!=null && !company.getContactNo().matches("^[0-9].{9}+$")) {
+            if (company.getContactNo() != null && !company.getContactNo().matches("^[0-9].{9}+$")) {
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact must be of 10 digits"));
             }
-            if(StringUtils.isBlank(company.getCompanyAddress())){
+            if (StringUtils.isBlank(company.getCompanyAddress())) {
                 bindingResult.addError(new FieldError("company", "companyAddress", "Address can not be blank"));
             }
-            if(findCompanyByContact(company.getContactNo()).isPresent()){
+            if (findCompanyByContact(company.getContactNo()).isPresent()) {
                 bindingResult.addError(new FieldError("company", "contactNo", "Contact already in use"));
             }
         }
@@ -75,8 +75,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void validateCompanyForUpdate(int id, Company company, BindingResult bindingResult) {
-        Company existingCompany=companyRepository.findById(id).get();
-        if(company!=null) {
+        Company existingCompany = companyRepository.findById(id).get();
+        if (company != null) {
             if (StringUtils.isBlank(company.getCompanyName())) {
                 bindingResult.addError(new FieldError("company", "companyName", "Company name cannot be blank"));
             }
@@ -100,7 +100,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void updateCompany(Company company, int id) {
-        Company company1=companyRepository.findById(id).get();
+        Company company1 = companyRepository.findById(id).get();
         company1.setCompanyName(company.getCompanyName());
         company1.setCompanyAddress(company.getCompanyAddress());
         company1.setContactNo(company.getContactNo());
@@ -109,6 +109,17 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void deleteCompanyById(int id) {
-        companyRepository.deleteById(id);
+        List<User> userList = userRepository.getUserByCompanyId(id);
+        for (User user : userList) {
+            if (user.getRole().equals(Role.STOCKHOLDER)) {
+                companyRepository.deleteById(id);
+            }
+            else {
+                user.setCompany(null);
+            }
+                userRepository.save(user);
+        }
+
     }
+
 }

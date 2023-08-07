@@ -16,9 +16,13 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "product", referencedColumnName = "product_name")
-    private Product product;
+//    @OneToOne
+//    @JoinColumn(name = "product", referencedColumnName = "productName")
+//    private Product product;
+
+    private String product;
+
+    private String company;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
@@ -39,14 +43,6 @@ public class OrderItem {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Orders getOrders() {
@@ -79,5 +75,21 @@ public class OrderItem {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

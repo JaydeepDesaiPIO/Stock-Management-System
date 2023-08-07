@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>Title</title>
 </head>
@@ -24,27 +25,27 @@
         </thead>
 
         <tbody>
-        <tr th:each = "mycart: ${mycart}">
-            <td th:each = "product: ${mycart.product}"
-                th:text = "${product.productName}">
+        <tr th:each="mycart: ${mycart}">
+            <td th:each="product: ${mycart.product}"
+                th:text="${product.productName}">
             </td>
-            <td th:each = "product: ${mycart.product}"
-                th:text = "${product.description}">
+            <td th:each="product: ${mycart.product}"
+                th:text="${product.description}">
             </td>
-            <td th:text = "${mycart.productCount}">
+            <td th:text="${mycart.productCount}">
             </td>
             <td>
-                                <a href = "#" th:href="@{/user/remove/{id} (id=${mycart.id})}"
-                                   class = "btn btn-primary">Remove</a>
+                <a href="#" th:href="@{/user/remove/{id} (id=${mycart.id})}"
+                   class="btn btn-primary">Remove</a>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="container text-center">
-        <a th:href = "@{/user/products}"
-           class = "btn btn-primary">Add more products</a>
-        <a th:href= "@{/user/buy}"
-           class="btn btn-primary" >Buy</a>
+        <a th:href="@{/user/products}"
+           class="btn btn-primary">Add more products</a>
+        <a th:href="@{/user/buy}"
+           class="btn btn-primary">Buy</a>
     </div>
 </div>
 </body>

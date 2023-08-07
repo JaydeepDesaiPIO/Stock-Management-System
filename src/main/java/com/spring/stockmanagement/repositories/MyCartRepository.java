@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MyCartRepository extends JpaRepository<MyCart,Integer> {
+public interface MyCartRepository extends JpaRepository<MyCart, Integer> {
 
     List<MyCart> getCartByUser(User user);
 }

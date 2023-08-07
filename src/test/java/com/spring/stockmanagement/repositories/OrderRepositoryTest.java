@@ -1,12 +1,11 @@
 package com.spring.stockmanagement.repositories;
 
 import com.spring.stockmanagement.Enum.OrderStatus;
-import com.spring.stockmanagement.entities.*;
+import com.spring.stockmanagement.entities.OrderItem;
+import com.spring.stockmanagement.entities.Orders;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OrderRepositoryTest {
@@ -18,18 +17,17 @@ class OrderRepositoryTest {
     private OrderItemRepository orderItemRepository;
 
     @Test
-    void saveOrder()
-    {
+    void saveOrder() {
 
 
-        Orders o= Orders.builder()
+        Orders o = Orders.builder()
                 .status(OrderStatus.PENDING)
 
-               // .orderItems()
+                // .orderItems()
                 .build();
         orderRepository.save(o);
-        OrderItem ot=OrderItem.builder()
-              //  .product(new Product("pencil",10,100,"good pen",new Company()))
+        OrderItem ot = OrderItem.builder()
+                //  .product(new Product("pencil",10,100,"good pen",new Company()))
                 .price(10)
                 .quantity(10)
                 .totalPrice(100)
