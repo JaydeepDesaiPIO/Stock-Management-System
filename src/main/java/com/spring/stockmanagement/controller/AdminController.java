@@ -49,6 +49,9 @@ public class AdminController {
         if (user.getRole().equals(Role.STOCKHOLDER)) {
             session.setAttribute("message", new Message("Unable to delete user with role STOCKHOLDER", "alert-danger"));
             return "redirect:/admin/users";
+        } else if (user.getRole().equals(Role.ADMIN)) {
+            session.setAttribute("message", new Message("Unable to delete user with role ADMIN", "alert-danger"));
+            return "redirect:/admin/users";
         } else {
             session.setAttribute("message", new Message("User deleted", "alert-success"));
             userService.deleteUserById(id);

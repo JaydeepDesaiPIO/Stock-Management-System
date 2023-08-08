@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="user/base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,15 +12,17 @@
     <title>Title</title>
 </head>
 <body>
+<section>
 <div class="container">
     List of Companies
-    <table class="table table-bordered">
+    <table id="product" class="table table-bordered">
         <thead class="table-primary">
         <tr>
             <th>Company ID</th>
             <th>Company Name</th>
             <th>Contact</th>
             <th>Address</th>
+            <th>Action</th>
         </tr>
         </thead>
 
@@ -38,5 +41,6 @@
         </tbody>
     </table>
 </div>
+</section>
 </body>
 </html>

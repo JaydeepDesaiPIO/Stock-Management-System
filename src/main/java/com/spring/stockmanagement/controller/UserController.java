@@ -4,6 +4,7 @@ import com.spring.stockmanagement.entities.*;
 import com.spring.stockmanagement.helper.Message;
 import com.spring.stockmanagement.repositories.*;
 import com.spring.stockmanagement.service.Interface.MyCartService;
+import com.spring.stockmanagement.service.Interface.OrderService;
 import com.spring.stockmanagement.service.Interface.ProductService;
 import com.spring.stockmanagement.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class UserController {
     private MyCartService myCartService;
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @ModelAttribute("currentUser")
     public User getUser(Principal principal) {
@@ -116,28 +120,7 @@ public class UserController {
             model.addAttribute("orderItem", orderItem);
             return "user/order";
         }
-
-        //order obj
-        Orders order = new Orders();
-        //set order to orderItem
-        orderItem.setOrders(order);
-        //set orderItem list to order
-        order.setOrderItems(List.of(orderItem));
-        //get current user
-        String currentUserName = principal.getName();
-        User CurrentUser = userRepository.findByName(currentUserName).get();
-        //set user to order
-        order.setUser(CurrentUser);
-
-        Product product1 = productService.getProductById(product.getProductId());
-        Company company = product1.getCompany();
-        company.getUser().add(CurrentUser);
-        companyRepository.save(company);
-        // order.setOrderDate();
-
-        orderItemRepository.save(orderItem);
-        orderRepository.save(order);
-
+        orderService.saveOrder(product,orderItem,principal);
         session.setAttribute("message", new Message("Order placed successfully!!", "alert-success"));
         return "user/order";
     }
@@ -173,36 +156,22 @@ public class UserController {
 
     @GetMapping("/buy")
     public String buyProductsFromCart(Principal principal) {
-        String currentUserName = principal.getName();
-        User CurrentUser = userRepository.findByName(currentUserName).get();
-        Orders orders = new Orders();
-        orders.setUser(CurrentUser);
-        List<OrderItem> orderItemList = new ArrayList<>();
-        for (MyCart mycart : myCartService.findByUser(CurrentUser)) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(mycart.getProduct().getProductName());
-            orderItem.setCompany(mycart.getProduct().getCompany().getCompanyName());
-            orderItem.setQuantity(mycart.getProductCount());
-            orderItem.setPrice(mycart.getProduct().getProductPrice());
-            orderItem.setTotalPrice(mycart.getProductCount() * mycart.getProduct().getProductPrice());
-            orderItem.setOrders(orders);
-
-            orderItemList.add(orderItem);
-            orders.setOrderItems(orderItemList);
-            orderRepository.save(orders);
-            orderItemRepository.save(orderItem);
-
-            Company company = companyRepository.findByCompanyName(mycart.getProduct().getCompany().getCompanyName()).get();
-            company.getUser().add(CurrentUser);
-            companyRepository.save(company);
-            myCartRepository.deleteAll();
-        }
-        return "user/success";
+        User user=getUser(principal);
+        orderService.saveAllOrder(user);
+        return "redirect:/user/orders";
     }
 
     @GetMapping("/remove/{id}")
     public String removeFromCart(@PathVariable("id") int id, Principal principal) {
         userService.removeFromCart(id, principal);
         return "redirect:/user/mycart";
+    }
+
+    @GetMapping("/orders")
+    public String allOrders(Model model,Principal principal)
+    {
+        User user=getUser(principal);
+        model.addAttribute("orders",orderRepository.getOrdersByUserId(user.getId()));
+        return "user/order_history";
     }
 }

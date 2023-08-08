@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="admin/base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,6 +12,7 @@
     <title>Users</title>
 </head>
 <body>
+<section>
 <div class="container">
     <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert alert-info">
         <p class="text-center" th:text="${session.message.content}"></p>
@@ -20,13 +22,14 @@
     <div class="row">
         <h1>List of Users</h1>
     </div>
-    <table class="table table-bordered">
+    <table id="details" class="table table-bordered">
         <thead class="table-primary">
         <tr>
             <th>User ID</th>
             <th>User Name</th>
             <th>Email</th>
             <th>Address</th>
+            <th>Action</th>
         </tr>
         </thead>
 
@@ -44,5 +47,6 @@
         </tbody>
     </table>
 </div>
+</section>
 </body>
 </html>

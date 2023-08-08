@@ -10,6 +10,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Orders {
             @Parameter(name = SequenceGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d")
     })
     private String id;
-    private Date orderDate;
+    private String orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -37,7 +38,7 @@ public class Orders {
     private User user;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems;
 
 //getter setter
 
@@ -49,11 +50,11 @@ public class Orders {
         this.id = id;
     }
 
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 

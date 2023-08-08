@@ -51,7 +51,13 @@ public class CompanyController {
     }
 
     @GetMapping("/signup")
-    public String companySignup(Model model) {
+    public String companySignup(Model model,Principal principal) {
+        String currentUserName = principal.getName();
+        User CurrentUser = userRepository.findByName(currentUserName).get();
+        if(CurrentUser.getCompany()!=null)
+        {
+            return "company/message";
+        }
         Company company = new Company();
         model.addAttribute("company", company);
         model.addAttribute("title", "Registration form");

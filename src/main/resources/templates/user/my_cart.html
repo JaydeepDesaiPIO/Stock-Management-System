@@ -8,19 +8,35 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <!--    jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css">
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+            $(document).ready( function () {
+
+            $('#mycart').DataTable(
+            {
+                responsive: true
+            });
+    } );
+
+    </script>
     <title>Title</title>
 </head>
 <body>
+
 <div class="container">
     <div class="row">
         <h1>My Cart</h1>
     </div>
-    <table class="table table-bordered">
+    <table id="mycart" class="table table-bordered">
         <thead class="table-primary">
         <tr>
             <th>Product Name</th>
             <th>Description</th>
             <th>Quantity</th>
+            <th></th>
         </tr>
         </thead>
 
@@ -44,6 +60,9 @@
     <div class="container text-center">
         <a th:href="@{/user/products}"
            class="btn btn-primary">Add more products</a>
+    </div>
+    <br>
+    <div class="container text-center">
         <a th:href="@{/user/buy}"
            class="btn btn-primary">Buy</a>
     </div>

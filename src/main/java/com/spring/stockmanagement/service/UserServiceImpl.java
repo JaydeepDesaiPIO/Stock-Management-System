@@ -114,19 +114,6 @@ public class UserServiceImpl implements UserService {
         productRepository.save(product);
         myCartRepository.deleteById(id);
 
-//        String currentUserName = principal.getName();
-//        User CurrentUser = userRepository.findByName(currentUserName).get();
-//        List<MyCart> myCartList=myCartRepository.getCartByUser(CurrentUser);
-//        for(MyCart myCart: myCartList)
-//        {
-//            if(myCart.getId()==id)
-//            {
-//                Product product=productRepository.findById(myCart.getProduct().getProductId()).get();
-//                product.setProductQuantity(product.getProductQuantity()+myCart.getProductCount());
-//                productRepository.save(product);
-//
-//            }
-//        }
     }
 
     @Override

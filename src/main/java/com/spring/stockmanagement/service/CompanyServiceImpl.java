@@ -13,7 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.security.Principal;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
 @Service
@@ -109,17 +111,23 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void deleteCompanyById(int id) {
-        List<User> userList = userRepository.getUserByCompanyId(id);
-        for (User user : userList) {
-            if (user.getRole().equals(Role.STOCKHOLDER)) {
-                companyRepository.deleteById(id);
-            }
-            else {
+        Company company=companyRepository.findById(id).get();
+        List<User> users=company.getUser();
+        for (User user : users) {
+            if (!user.getRole().equals(Role.STOCKHOLDER)) {
                 user.setCompany(null);
-            }
                 userRepository.save(user);
+            }
         }
-
+        Iterator<User> iterator=users.iterator();
+        while(iterator.hasNext())
+        {
+            if(!iterator.next().getRole().equals(Role.STOCKHOLDER))
+            {
+                iterator.remove();
+            }
+        }
+        companyRepository.save(company);
+        companyRepository.deleteById(id);
     }
-
 }

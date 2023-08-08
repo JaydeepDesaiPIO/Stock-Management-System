@@ -33,7 +33,7 @@ public class Company {
     @OneToMany(mappedBy = "company", orphanRemoval = true)
     private List<User> user;
 
-    @OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> product;
 
     //constructor
