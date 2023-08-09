@@ -70,47 +70,23 @@ public class ProductServiceImpl implements ProductService {
             Product product1 = productRepository.findById(product.getProductId()).get();
             if (orderItem.getQuantity() > product1.getProductQuantity() || (product1.getProductQuantity() <= 0)) {
                 bindingResult.addError(new FieldError("orderItem", "quantity", "only " + product1.getProductQuantity() + " are available"));
-            } else {
-                product1.setProductQuantity(product1.getProductQuantity() - orderItem.getQuantity());
-                orderItem.setProduct(product1.getProductName());
-                orderItem.setCompany(product1.getCompany().getCompanyName());
-                orderItem.setPrice(product1.getProductPrice());
-                orderItem.setTotalPrice(orderItem.getQuantity()* product1.getProductPrice());
-                productRepository.save(product1);
+            }
+            if(orderItem.getQuantity()<=0){
+                bindingResult.addError(new FieldError("orderItem", "quantity", "Please input a correct value"));
             }
         }
     }
 
     @Override
-    public void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session, BindingResult bindingResult) {
+    public void addProductToCart(Product product, MyCart myCart, BindingResult bindingResult) {
         if (productRepository.findById(product.getProductId()).isPresent()) {
             Product product1 = productRepository.findById(product.getProductId()).get();
-            if ((product1.getProductQuantity() > 0) && (product1.getProductQuantity() < myCart.getProductCount())) {
+            if ((product1.getProductQuantity() <= 0) || (product1.getProductQuantity() < myCart.getProductCount())) {
 
                 bindingResult.addError(new FieldError("mycart", "productCount", "only " + product1.getProductQuantity() + " are available"));
             }
-            if (myCart.getProductCount() < 0) {
-
+            if (myCart.getProductCount() <= 0) {
                 bindingResult.addError(new FieldError("mycart", "productCount", "Please input a correct value"));
-            } else {
-                int count = 0;
-                product1.setProductQuantity(product1.getProductQuantity() - myCart.getProductCount());
-                productRepository.save(product1);
-                String currentUserName = principal.getName();
-                User currentUser = userRepository.findByName(currentUserName).get();
-                myCart.setUser(currentUser);
-                List<MyCart> myCartList = myCartRepository.getCartByUser(currentUser);
-                for (MyCart myCart1 : myCartList) {
-                    if (myCart1.getProduct().equals(product1)) {
-                        myCart1.setProductCount(myCart1.getProductCount() + myCart.getProductCount());
-                        myCartRepository.save(myCart1);
-                        count++;
-                    }
-                }
-                if (count == 0) {
-                    myCart.setProduct(product1);
-                    myCartRepository.save(myCart);
-                }
             }
         }
     }

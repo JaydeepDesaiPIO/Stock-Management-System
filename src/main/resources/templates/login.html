@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,6 +12,7 @@
     <title>Title</title>
 </head>
 <body>
+<section>
 <div id="login">
     <div class="container">
         <div id="login-row" class="row justify-content-center align-items-center">
@@ -43,7 +45,7 @@
 
                         <div id="register-link" class="text-end">
                             New User?
-                            <a href="#" th:href="@{/home/signup}" class="text-info">Register here</a>
+                            <a href="#" th:href="@{/home/user/signup}" class="text-info">Register here</a>
                         </div>
 
                     </form>
@@ -52,5 +54,6 @@
         </div>
     </div>
 </div>
+</section>
 </body>
 </html>

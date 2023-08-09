@@ -1,5 +1,6 @@
 package com.spring.stockmanagement.service;
 
+import com.spring.stockmanagement.Enum.OrderStatus;
 import com.spring.stockmanagement.entities.*;
 import com.spring.stockmanagement.repositories.*;
 import com.spring.stockmanagement.service.Interface.MyCartService;
@@ -39,8 +40,23 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private MyCartService myCartService;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private SchedulerTask schedulerTask;
+
     @Override
     public void saveOrder(Product product, OrderItem orderItem, Principal principal) {
+
+        Product product1=productService.getProductById(product.getProductId());
+        product1.setProductQuantity(product1.getProductQuantity() - orderItem.getQuantity());
+        orderItem.setProduct(product1.getProductName());
+        orderItem.setCompany(product1.getCompany().getCompanyName());
+        orderItem.setPrice(product1.getProductPrice());
+        orderItem.setTotalPrice(orderItem.getQuantity()* product1.getProductPrice());
+        productRepository.save(product1);
+
         Orders order = new Orders();
         orderItem.setOrders(order);                     //set order to orderItem
         List<OrderItem> orderItemList=new ArrayList<>(List.of(orderItem));
@@ -70,6 +86,8 @@ public class OrderServiceImpl implements OrderService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String strDate= formatter.format(date);
         orders.setOrderDate(strDate);
+        orders.setStatus(OrderStatus.SHIPPED);
+        schedulerTask.setOrderStatus();
         List<OrderItem> orderItemList = new ArrayList<>();
         for (MyCart mycart : myCartService.findByUser(user)) {
             OrderItem orderItem = new OrderItem();
@@ -81,14 +99,21 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setOrders(orders);
 
             orderItemList.add(orderItem);
-            orders.setOrderItems(orderItemList);
-            orderRepository.save(orders);
             orderItemRepository.save(orderItem);
+            myCartRepository.delete(mycart);
+        }
+        orders.setOrderItems(orderItemList);
+        orderRepository.save(orders);
 
-            Company company = companyRepository.findByCompanyName(mycart.getProduct().getCompany().getCompanyName()).get();
-            company.getUser().add(user);
-            companyRepository.save(company);
-            myCartRepository.deleteAll();
+    }
+
+    @Override
+    public void setOrderStatus() {
+        List<Orders> listOfOrderedHistory=orderRepository.getOrderByStatus(OrderStatus.SHIPPED);
+        for (Orders orders: listOfOrderedHistory)
+        {
+            orders.setStatus(OrderStatus.DELIVERED);
+            orderRepository.save(orders);
         }
     }
 }

@@ -34,6 +34,18 @@ public class OrderItem {
 
     private double totalPrice;
 
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", product='" + product + '\'' +
+                ", company='" + company + '\'' +
+                ", orders=" + orders +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 
 //getter setter
 

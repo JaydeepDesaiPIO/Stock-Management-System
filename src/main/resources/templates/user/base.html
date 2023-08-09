@@ -62,11 +62,12 @@
 <div class="sidebar">
 
     <a href="#" th:href="@{/user/}" class="item"> <i class="fa-solid fa-house"></i> Home</a>
-    <a href="#" th:href="@{/user/selectCompany}" class="item"> <i class="fa-solid fa-house"></i> Select Company</a>
+    <a href="#" th:href="@{/user/selectCompany}" class="item"> <i class="fa-sharp fa-solid fa-building"></i> Select Company</a>
     <a href="#" th:href="@{/user/products}" class="item"> <i class="fa-sharp fa-solid fa-bag-shopping"></i> Products</a>
     <a href="#" th:href="@{/user/mycart}" class="item"> <i class="fa-solid fa-cart-shopping"></i> My Cart</a>
     <a href="#" th:href="@{/user/edit/{id}(id=${currentUser.id})}" class="item"> <i class="fa-solid fa-user"></i> My
         Profile</a>
+    <a href="#" th:href="@{/user/orders}" class="item"> <i class="fa-brands fa-shopify"></i> Order History</a>
     <a href="#" th:href="@{/logout}" class="item"> <i class="fa-solid fa-arrow-right-from-arc"></i> Logout</a>
     <div class="divider"></div>
 </div>

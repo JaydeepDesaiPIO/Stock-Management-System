@@ -26,7 +26,7 @@ public interface ProductService {
 
     void saveOrderItem(Product product, OrderItem orderItem, BindingResult bindingResult);
 
-    void addProductToCart(Product product, MyCart myCart, Principal principal, HttpSession session, BindingResult bindingResult);
+    void addProductToCart(Product product, MyCart myCart, BindingResult bindingResult);
 
     void validateProduct(Product product, BindingResult bindingResult, Principal principal);
 

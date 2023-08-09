@@ -20,7 +20,7 @@ invalid-feedback
 
 .sidebar{
     width: 15%;
-    background: black;
+    background: #1d2951;
     height: 100%;
     position: fixed;
     padding-top: 45px;
@@ -31,11 +31,12 @@ invalid-feedback
     width: 100%;
     padding: 10px 25px;
     text-decoration: none;
-    color: gray;
+    color: white;
 }
 
 .sidebar a:hover{
     background:#e2e2e2;
+    color: black
 }
 
 .sidebar .divider{
@@ -46,5 +47,5 @@ invalid-feedback
 }
 
 .content{
-    margin-left: 20%;
+    margin-left: 17%;
 }

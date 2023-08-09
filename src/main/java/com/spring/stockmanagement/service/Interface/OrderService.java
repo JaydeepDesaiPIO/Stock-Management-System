@@ -10,4 +10,6 @@ public interface OrderService {
     void saveOrder(Product product, OrderItem orderItem, Principal principal);
 
     void saveAllOrder(User user);
+
+    void setOrderStatus();
 }

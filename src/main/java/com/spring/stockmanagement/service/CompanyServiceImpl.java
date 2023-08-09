@@ -119,14 +119,7 @@ public class CompanyServiceImpl implements CompanyService {
                 userRepository.save(user);
             }
         }
-        Iterator<User> iterator=users.iterator();
-        while(iterator.hasNext())
-        {
-            if(!iterator.next().getRole().equals(Role.STOCKHOLDER))
-            {
-                iterator.remove();
-            }
-        }
+        users.removeIf(user -> !user.getRole().equals(Role.STOCKHOLDER));
         companyRepository.save(company);
         companyRepository.deleteById(id);
     }

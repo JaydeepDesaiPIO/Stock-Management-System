@@ -44,23 +44,17 @@
 
             <tbody>
             <tr th:each="order: ${orders}">
-                <td th:each="orderItem: ${order.orderItems}">
-                    <span th:each="ot: ${orderItem}"
-                             th:text="${ot.product}">
-                    </span>
+                <td th:each="orderItem: ${order.orderItems}"
+                     th:text="${orderItem.product}">
                 </td>
-                <td th:each="orderItem: ${order.orderItems}">
-                    <span th:each="ot: ${orderItem}"
-                          th:text="${ot.company}">
-                    </span>
+                <td th:each="orderItem: ${order.orderItems}"
+                    th:text="${orderItem.company}">
                 </td>
                 <td th:text="${order.orderDate}"></td>
 <!--                <td th:each="orderStatus: ${order.status}"-->
 <!--                    th:text="orderStatus"></td>-->
-                <td th:each="orderItem: ${order.orderItems}">
-                    <span th:each="ot: ${orderItem}"
-                          th:text="${ot.totalPrice}">
-                    </span>
+                <td th:each="orderItem: ${order.orderItems}"
+                    th:text="${orderItem.totalPrice}">
                 </td>
             </tr>
             </tbody>

@@ -27,7 +27,7 @@
                     <form th:action="@{/user/addToCart}" method="post">
                         <div th:object="${product}">
                             <div class="form-group mb-3">
-                                <label for="number">Product Name</label>
+                                <label for="number">Product Id</label>
                                 <input type="number" class="form-control" id="number"
                                        th:field="*{productId}"
                                 >

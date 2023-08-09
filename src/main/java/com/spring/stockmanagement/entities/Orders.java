@@ -42,6 +42,17 @@ public class Orders {
 
 //getter setter
 
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "id='" + id + '\'' +
+                ", orderDate='" + orderDate + '\'' +
+                ", status=" + status +
+                ", user=" + user +
+                ", orderItems=" + orderItems +
+                '}';
+    }
+
     public String getId() {
         return id;
     }
@@ -72,5 +83,13 @@ public class Orders {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }

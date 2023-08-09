@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav text-uppercase">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" th:href="@{/home/}" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -39,7 +39,7 @@
                     <a class="nav-link" th:href="@{/home/signin}" href="#">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/home/signup}" href="#">Signup</a>
+                    <a class="nav-link" th:href="@{/home/user/signup}" href="#">Signup</a>
                 </li>
             </ul>
         </div>
@@ -48,23 +48,9 @@
 
 <!--END navbar-->
 
-<!--sidebar-->
-<div class="sidebar">
-
-    <a href="#" class="item"> <i class="fa-solid fa-house"></i> Home</a>
-    <a href="#" class="item"> <i class="fa-sharp fa-solid fa-bag-shopping"></i> Products</a>
-    <a href="#" class="item"> <i class="fa-solid fa-cart-shopping"></i> My Cart</a>
-    <a href="#" class="item"> <i class="fa-solid fa-user"></i> My Profile</a>
-    <a href="#" class="item"> <i class="fa-solid fa-arrow-right-from-arc"></i> Logout</a>
-    <div class="divider"></div>
-</div>
-<!--End sidebar-->
-
 <!--CONTENT area-->
-<div class="content">
-    <i th:onclick="toggleSidebar()" class="fa-sharp fa-solid fa-bars"></i>
     <div th:replace="${content}"></div>
-</div>
+
 
 <!--End Content area-->
 

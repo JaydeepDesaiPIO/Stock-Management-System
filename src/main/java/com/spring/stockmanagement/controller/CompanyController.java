@@ -143,7 +143,7 @@ public class CompanyController {
         productService.updateProduct(id, product);
         session.setAttribute("message", new Message("Updated Successfully!!", "alert-success"));
         model.addAttribute("product", product);
-        return "company/update_product";
+        return "redirect:/company/product/update/{id}";
     }
 
     @GetMapping("/product/delete/{id}")

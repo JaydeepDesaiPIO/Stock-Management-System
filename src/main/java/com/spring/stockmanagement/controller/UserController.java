@@ -137,11 +137,12 @@ public class UserController {
 
     @PostMapping("/addToCart")
     public String addToCart(@ModelAttribute("product") Product product, @ModelAttribute("myCart") MyCart myCart, BindingResult bindingResult, Principal principal, HttpSession session, Model model) {
-        productService.addProductToCart(product, myCart, principal, session, bindingResult);
+        productService.addProductToCart(product, myCart, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("myCart", myCart);
             return "user/addToCart";
         }
+        myCartService.addProduct(product, myCart, principal);
         session.setAttribute("message", new Message("Product added to cart", "alert-success"));
         return "redirect:/user/products";
     }
@@ -171,6 +172,18 @@ public class UserController {
     public String allOrders(Model model,Principal principal)
     {
         User user=getUser(principal);
+//        List<Orders> ordersList=orderRepository.getOrdersByUserId(user.getId());
+//        List<List<OrderItem>> orderItemList=new ArrayList<>();
+//        for(Orders orders: ordersList)
+//        {
+//            orderItemList.add(orders.getOrderItems());
+//            orders.getOrderItems();
+//        }
+//        List<OrderItem> orderItemList1=new ArrayList<>();
+//        for (List<OrderItem> orderItem: orderItemList){
+////            orderItemList1.add(List.of(orderItem));
+//            System.out.println(orderItem.toString());
+//        }
         model.addAttribute("orders",orderRepository.getOrdersByUserId(user.getId()));
         return "user/order_history";
     }

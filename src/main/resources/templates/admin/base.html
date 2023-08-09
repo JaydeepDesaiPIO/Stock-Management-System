@@ -60,8 +60,8 @@
 <div class="sidebar">
 
     <a href="#" th:href="@{/admin/}" class="item"> <i class="fa-solid fa-house"></i> Home</a>
-    <a href="#" th:href="@{/admin/users}" class="item"> <i class="fa-sharp fa-solid fa-bag-shopping"></i> User</a>
-    <a href="#" th:href="@{/admin/companies}" class="item"> <i class="fa-solid fa-cart-shopping"></i> Companies</a>
+    <a href="#" th:href="@{/admin/users}" class="item"> <i class="fa-solid fa-users"></i> User</a>
+    <a href="#" th:href="@{/admin/companies}" class="item"> <i class="fa-sharp fa-solid fa-city"></i> Companies</a>
     <a href="#" th:href="@{/admin/edit/{id} (id=${admin.id})}" class="item"> <i class="fa-solid fa-user"></i> My Profile</a>
     <a href="#" th:href="@{/logout}" class="item"> <i class="fa-solid fa-arrow-right-from-arc"></i> Logout</a>
     <div class="divider"></div>
@@ -70,7 +70,6 @@
 
 <!--CONTENT area-->
 <div class="content">
-    <i th:onclick="toggleSidebar()" class="fa-sharp fa-solid fa-bars"></i>
     <div th:replace="${content}"></div>
 </div>
 
