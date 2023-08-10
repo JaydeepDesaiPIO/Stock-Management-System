@@ -13,7 +13,6 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -68,14 +67,11 @@ public class OrderServiceImpl implements OrderService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String strDate= formatter.format(date);
         order.setOrderDate(strDate);          //set order date and time
+        order.setStatus(OrderStatus.SHIPPED);
+        schedulerTask.setOrderStatus();
 
         orderRepository.save(order);
         orderItemRepository.save(orderItem);
-
-//        Product product1 = productService.getProductById(product.getProductId());
-//        Company company = product1.getCompany();
-//        company.getUser().add(CurrentUser);
-//        companyRepository.save(company);
     }
 
     @Override

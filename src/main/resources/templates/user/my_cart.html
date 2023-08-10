@@ -28,6 +28,11 @@
 
 <div class="container">
     <div class="row">
+        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert alert-info">
+            <p class="text-center" th:text="${session.message.content}"></p>
+
+            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+        </div>
         <h1>My Cart</h1>
     </div>
     <table id="mycart" class="table table-bordered">

@@ -3,17 +3,24 @@ package com.spring.stockmanagement.controller;
 import com.spring.stockmanagement.entities.*;
 import com.spring.stockmanagement.helper.Message;
 import com.spring.stockmanagement.repositories.*;
+import com.spring.stockmanagement.service.ExportPdf;
 import com.spring.stockmanagement.service.Interface.MyCartService;
 import com.spring.stockmanagement.service.Interface.OrderService;
 import com.spring.stockmanagement.service.Interface.ProductService;
 import com.spring.stockmanagement.service.Interface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,8 +163,12 @@ public class UserController {
     }
 
     @GetMapping("/buy")
-    public String buyProductsFromCart(Principal principal) {
-        User user=getUser(principal);
+    public String buyProductsFromCart(Principal principal,HttpSession session) {
+        User user = getUser(principal);
+        if (myCartService.findByUser(user).isEmpty()){
+            session.setAttribute("message", new Message("Cart is empty", "alert-danger"));
+            return "redirect:/user/mycart";
+        }
         orderService.saveAllOrder(user);
         return "redirect:/user/orders";
     }
@@ -172,19 +183,37 @@ public class UserController {
     public String allOrders(Model model,Principal principal)
     {
         User user=getUser(principal);
-//        List<Orders> ordersList=orderRepository.getOrdersByUserId(user.getId());
-//        List<List<OrderItem>> orderItemList=new ArrayList<>();
-//        for(Orders orders: ordersList)
-//        {
-//            orderItemList.add(orders.getOrderItems());
-//            orders.getOrderItems();
-//        }
-//        List<OrderItem> orderItemList1=new ArrayList<>();
-//        for (List<OrderItem> orderItem: orderItemList){
-////            orderItemList1.add(List.of(orderItem));
-//            System.out.println(orderItem.toString());
-//        }
-        model.addAttribute("orders",orderRepository.getOrdersByUserId(user.getId()));
+        List<Orders> ordersList=orderRepository.getOrdersByUserId(user.getId());
+        List<OrderItem> orderItemList=new ArrayList<>();
+        for(Orders orders: ordersList)
+        {
+            for (OrderItem orderItem: orders.getOrderItems())
+            {
+                orderItemList.add(orderItem);
+            }
+        }
+        model.addAttribute("orderItem", orderItemList);
         return "user/order_history";
+    }
+
+    @GetMapping("/order/pdf")
+    public ResponseEntity<InputStreamResource> userOrderPdf(Principal principal)  throws IOException {
+        User user=getUser(principal);
+        List<Orders> ordersList=orderRepository.getOrdersByUserId(user.getId());
+        List<OrderItem> orderItemList=new ArrayList<>();
+        for(Orders orders: ordersList)
+        {
+            for (OrderItem orderItem: orders.getOrderItems())
+            {
+                orderItemList.add(orderItem);
+            }
+        }
+        ByteArrayInputStream bis = ExportPdf.exportOrderPdf(orderItemList);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=OrderPDF.pdf");
+
+        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 }

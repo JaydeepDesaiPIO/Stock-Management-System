@@ -27,21 +27,21 @@
                     <form th:action="@{/user/add/order}" method="post">
                         <div th:object="${product}">
                             <div class="form-group mb-3">
-                                <label for="productId">Product Name</label>
+                                <label for="productId">Product ID</label>
                                 <input type="text" class="form-control" id="productId"
-                                       th:field="*{productId}"
+                                       th:field="*{productId}" readonly
                                 >
                             </div>
                             <div class="form-group mb-3">
                                 <label for="product">Product Name</label>
                                 <input type="text" class="form-control" id="product"
-                                       th:field="*{productName}"
+                                       th:field="*{productName}" readonly
                                 >
                             </div>
                             <div class="form-group mb-3">
                                 <label for="productPrice">Price</label>
                                 <input type="number" class="form-control" id="productPrice" placeholder="Price"
-                                       th:field="*{productPrice}">
+                                       th:field="*{productPrice}" readonly>
                             </div>
                         </div>
                         <div th:object="${orderItem}">

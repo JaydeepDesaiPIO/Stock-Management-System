@@ -47,10 +47,10 @@ public class AdminController {
     public String deleteUser(@PathVariable int id, HttpSession session) {
         User user = userService.findById(id);
         if (user.getRole().equals(Role.STOCKHOLDER)) {
-            session.setAttribute("message", new Message("Unable to delete user with role STOCKHOLDER", "alert-danger"));
+            session.setAttribute("message", new Message("Cannot delete user with role STOCKHOLDER", "alert-danger"));
             return "redirect:/admin/users";
         } else if (user.getRole().equals(Role.ADMIN)) {
-            session.setAttribute("message", new Message("Unable to delete user with role ADMIN", "alert-danger"));
+            session.setAttribute("message", new Message("Cannot delete user with role ADMIN", "alert-danger"));
             return "redirect:/admin/users";
         } else {
             session.setAttribute("message", new Message("User deleted", "alert-success"));
@@ -85,7 +85,7 @@ public class AdminController {
         // save updated user
         userService.validateUserForUpdate(user, id, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute(user);
+            model.addAttribute("user",user);
             return "admin/update_admin";
         }
         userService.updateUser(user, id);

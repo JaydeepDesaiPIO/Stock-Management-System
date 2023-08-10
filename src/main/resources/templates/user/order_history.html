@@ -37,28 +37,31 @@
                 <th>Product Name</th>
                 <th>Company Name</th>
                 <th>Order Date</th>
-<!--                <th>Status</th>-->
+                <th>Status</th>
                 <th>Total Price</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="order: ${orders}">
-                <td th:each="orderItem: ${order.orderItems}"
-                     th:text="${orderItem.product}">
-                </td>
-                <td th:each="orderItem: ${order.orderItems}"
-                    th:text="${orderItem.company}">
-                </td>
-                <td th:text="${order.orderDate}"></td>
-<!--                <td th:each="orderStatus: ${order.status}"-->
-<!--                    th:text="orderStatus"></td>-->
-                <td th:each="orderItem: ${order.orderItems}"
-                    th:text="${orderItem.totalPrice}">
-                </td>
-            </tr>
+                <tr th:each="ot: ${orderItem}">
+                    <td th:text="${ot.product}">
+                    </td>
+
+                    <td th:text="${ot.company}">
+                    </td>
+
+                    <td th:text="${ot.orders.orderDate}"></td>
+
+                    <td th:text="${ot.orders.status}"></td>
+
+                    <td th:text="${ot.totalPrice}">
+                    </td>
+                </tr>
             </tbody>
         </table>
+    </div>
+    <div class="container mt-3">
+        <a th:href="@{/user/order/pdf}" class="btn btn-danger">Download Pdf</a>
     </div>
 </section>
 </body>
