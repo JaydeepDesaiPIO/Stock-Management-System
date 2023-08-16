@@ -29,6 +29,8 @@ public interface UserService {
 
     boolean userExistByContact(String contact);
 
+    boolean userExistByName(String name);
+
     void isUserValid(User user, BindingResult bindingResult);
 
     void deleteUserById(int id);

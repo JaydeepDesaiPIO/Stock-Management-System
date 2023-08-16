@@ -152,4 +152,6 @@ public class CompanyController {
         session.setAttribute("message", new Message("Updated Successfully!!", "alert-success"));
         return "redirect:/company/products";
     }
+
+
 }

@@ -151,13 +151,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean userExistByName(String name) {
+        return userRepository.findByName(name).isPresent();
+    }
+
+    @Override
     public void isUserValid(User user, BindingResult bindingResult) {
         if (user != null) {
             if (StringUtils.isBlank(user.getName())) {
                 bindingResult.addError(new FieldError("user", "name", "Username can not be blank"));
             }
-            if (user.getName() != null && !user.getName().matches("^[a-zA-Z]+$")) {         //&& user.getName().length()<4{
-                bindingResult.addError(new FieldError("user", "name", "Username can only have letters and contains atleast 4 characters"));
+            if (user.getName() != null && !user.getName().matches("^[a-zA-Z0-9]+$")) {
+                bindingResult.addError(new FieldError("user", "name", "Username can only have letters"));
+            }
+            if(user.getName().length()<4){
+                bindingResult.addError(new FieldError("user", "name", "Username should contain atleast 4 characters"));
             }
             if (StringUtils.isBlank(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email can not be blank"));
@@ -179,6 +187,9 @@ public class UserServiceImpl implements UserService {
             }
             if (user.getPassword() != null && !user.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$")) {
                 bindingResult.addError(new FieldError("user", "password", "Password must contain atleast one number, one UpperCase letter, one LowerCase letter, one Special Character and password length must 8-15 character"));
+            }
+            if(userExistByName(user.getName())){
+                bindingResult.addError(new FieldError("user", "name", "Username already in use"));
             }
             if (userExistByEmail(user.getEmail())) {
                 bindingResult.addError(new FieldError("user", "email", "Email already in use"));

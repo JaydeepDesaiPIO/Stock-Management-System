@@ -48,7 +48,7 @@
                             <div class="form-group mb-3">
                                 <label for="quantity">Quantity</label>
                                 <input type="number" class="form-control" id="quantity" placeholder="Quantity"
-                                       th:field="*{quantity}" th:errorClass="is-invalid"
+                                       th:field="*{quantity}" th:errorClass="is-invalid" required="required"
                                 >
                                 <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"
                                    class="invalid-feedback"></p>
