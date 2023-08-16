@@ -43,10 +43,14 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
 
-                        <div id="register-link" class="text-end">
-                            New User?
-                            <a href="#" th:href="@{/home/user/signup}" class="text-info">Register here</a>
-                        </div>
+                            <div id="register-link" class="text-center mt-4">
+                                New User?
+                                <a href="#" th:href="@{/home/user/signup}" class="text-info">Register here</a>
+                            </div>
+
+                            <div id="forgotPassword" class="text-center mt-2">
+                                <a href="#" th:href="@{/home/loadForgotPassword}" class="text-info">Forgot Password</a>
+                            </div>
 
                     </form>
                 </div>

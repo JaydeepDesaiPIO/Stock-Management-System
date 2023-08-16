@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -71,5 +68,43 @@ public class HomeController {
     public String login(Model model) {
         model.addAttribute("title", "Login Page");
         return "login.html";
+    }
+
+    @GetMapping("/loadForgotPassword")
+    public String loadForgotPassword(){
+        return "forget_password";
+    }
+    @GetMapping("/loadResetPassword/{id}")
+    public String loadResetPassword(@PathVariable("id") int id,Model model){
+        model.addAttribute("userId",id);
+        return "reset_password";
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(@RequestParam("email") String email, HttpSession session){
+        User existingUser=userRepository.getUserByEmail(email);
+        if(existingUser!=null)
+        {
+            return "redirect:/home/loadResetPassword/"+existingUser.getId();
+        }
+        else{
+            session.setAttribute("message", new Message("Invalid email address", "alert-danger"));
+            return "redirect:/home/loadForgotPassword";
+        }
+    }
+
+    @PostMapping("/changePassword")
+    public String resetPassword(@RequestParam("id") int id,@RequestParam("password") String password,@RequestParam("cpassword") String cpassword,HttpSession session)
+    {
+        if(userService.resetPassword(id,password,cpassword))
+        {
+            session.setAttribute("message", new Message("Password changed successfully", "alert-success"));
+            return "redirect:/home/loadForgotPassword";
+        }
+        else
+        {
+            session.setAttribute("message", new Message("Password and Confirm password does not match, Please re-enter the password", "alert-success"));
+            return "redirect:/home/loadResetPassword/"+id;
+        }
     }
 }

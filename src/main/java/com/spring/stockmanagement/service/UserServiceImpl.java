@@ -117,6 +117,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean resetPassword(int id, String password, String cpassword) {
+        if(password.equals(cpassword)){
+            User user=userRepository.findById(id).get();
+            String encryptPassword=passwordEncoder.encode(password);
+            user.setPassword(encryptPassword);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Optional<User> findByName(String name) {
         return userRepository.findByName(name);
     }

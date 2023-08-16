@@ -40,4 +40,6 @@ public interface UserService {
     void setCompany(int id, Principal principal);
 
     void removeFromCart(int id, Principal principal);
+
+    boolean resetPassword(int id, String password, String cpassword);
 }
