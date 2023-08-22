@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -136,10 +137,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userExists(String name) {
         Optional<User> byName = userRepository.findByName(name);
-        if (byName.isPresent()) {
-            return true;
-        }
-        return false;
+        return byName.isPresent();
     }
 
     @Override

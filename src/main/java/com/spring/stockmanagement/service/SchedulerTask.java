@@ -16,7 +16,7 @@ public class SchedulerTask {
     @Autowired
     private OrderRepository orderRepository;
 
-    @Scheduled(cron = "2 * * * * *")
+    @Scheduled(cron = "5 * * * * *")
     public void setOrderStatus()
     {
         List<Orders> listOfOrderedHistory=orderRepository.getOrderByStatus(OrderStatus.SHIPPED);

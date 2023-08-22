@@ -3,6 +3,7 @@ package com.spring.stockmanagement.service.Interface;
 import com.spring.stockmanagement.entities.User;
 import org.springframework.validation.BindingResult;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -42,4 +43,5 @@ public interface UserService {
     void removeFromCart(int id, Principal principal);
 
     boolean resetPassword(int id, String password, String cpassword);
+
 }

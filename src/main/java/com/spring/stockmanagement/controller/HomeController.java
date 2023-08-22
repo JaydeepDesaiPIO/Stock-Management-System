@@ -7,6 +7,7 @@ import com.spring.stockmanagement.helper.Message;
 import com.spring.stockmanagement.repositories.CompanyRepository;
 import com.spring.stockmanagement.repositories.UserRepository;
 import com.spring.stockmanagement.service.Interface.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/home")
@@ -22,12 +24,8 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserService userService;
-    @Autowired
-    private CompanyRepository companyRepository;
-
     @Autowired
     private EmailSenderService emailSenderService;
 
@@ -94,8 +92,15 @@ public class HomeController {
     }
 
     @PostMapping("/changePassword")
-    public String resetPassword(@RequestParam("id") int id,@RequestParam("password") String password,@RequestParam("cpassword") String cpassword,HttpSession session)
+    public String resetPassword(@RequestParam("id") int id,@RequestParam("password") String password,@RequestParam("cpassword") String cpassword, HttpSession session)
     {
+        if(StringUtils.isBlank(password)) {
+            session.setAttribute("message", new Message("Password cannot be blank", "alert-danger"));
+            return "redirect:/home/loadResetPassword/"+id;
+        }
+        if(!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$")){
+            session.setAttribute("message", new Message("Password must contain atleast one number, one UpperCase letter, one LowerCase letter, one Special Character and password length must 8-15 character", "alert-danger"));
+            return "redirect:/home/loadResetPassword/"+id;        }
         if(userService.resetPassword(id,password,cpassword))
         {
             session.setAttribute("message", new Message("Password changed successfully", "alert-success"));
@@ -103,7 +108,7 @@ public class HomeController {
         }
         else
         {
-            session.setAttribute("message", new Message("Password and Confirm password does not match, Please re-enter the password", "alert-success"));
+            session.setAttribute("message", new Message("Password and Confirm password does not match, Please re-enter the password", "alert-danger"));
             return "redirect:/home/loadResetPassword/"+id;
         }
     }

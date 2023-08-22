@@ -129,6 +129,10 @@ public class ProductServiceImpl implements ProductService {
             if (product.getProductPrice() <= 0) {
                 bindingResult.addError(new FieldError("product", "productPrice", "Please input a correct value"));
             }
+//            if(product.getProductPrice()==(int)product.getProductPrice())
+//            {
+//                bindingResult.addError(new FieldError("product", "productPrice", "Please input a correct value"));
+//            }
         }
     }
 

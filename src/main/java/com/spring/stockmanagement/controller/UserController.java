@@ -34,13 +34,9 @@ public class UserController {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private OrderItemRepository orderItemRepository;
-    @Autowired
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
-    @Autowired
-    private MyCartRepository myCartRepository;
     @Autowired
     private MyCartService myCartService;
     @Autowired
@@ -52,8 +48,8 @@ public class UserController {
     @ModelAttribute("currentUser")
     public User getUser(Principal principal) {
         String currentUserName = principal.getName();
-        User CurrentUser = userRepository.findByName(currentUserName).get();
-        return CurrentUser;
+        User currentUser = userRepository.findByName(currentUserName).get();
+        return currentUser;
     }
 
     @GetMapping("/")
@@ -68,7 +64,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public String updateBook(@PathVariable int id,
+    public String updateUser(@PathVariable int id,
                              @ModelAttribute("user") User user,
                              BindingResult bindingResult,
                              Model model, HttpSession session) {
@@ -187,10 +183,7 @@ public class UserController {
         List<OrderItem> orderItemList=new ArrayList<>();
         for(Orders orders: ordersList)
         {
-            for (OrderItem orderItem: orders.getOrderItems())
-            {
-                orderItemList.add(orderItem);
-            }
+            orderItemList.addAll(orders.getOrderItems());
         }
         model.addAttribute("orderItem", orderItemList);
         return "user/order_history";
@@ -203,10 +196,7 @@ public class UserController {
         List<OrderItem> orderItemList=new ArrayList<>();
         for(Orders orders: ordersList)
         {
-            for (OrderItem orderItem: orders.getOrderItems())
-            {
-                orderItemList.add(orderItem);
-            }
+            orderItemList.addAll(orders.getOrderItems());
         }
         ByteArrayInputStream bis = ExportPdf.exportOrderPdf(orderItemList);
 

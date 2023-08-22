@@ -45,7 +45,7 @@
                        class="form-control"
                        th:field="*{productPrice}"
                        placeholder="Enter Price"
-                       name="productPrice" th:errorClass="is-invalid"
+                       name="productPrice" th:errorClass="is-invalid" required
                 >
                 <p th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}"
                    class="invalid-feedback"></p>
@@ -56,7 +56,7 @@
                        class="form-control"
                        th:field="*{productQuantity}"
                        placeholder="Quantity"
-                       name="productQuantity" th:errorClass="is-invalid"
+                       name="productQuantity" th:errorClass="is-invalid" required
                 >
                 <p th:if="${#fields.hasErrors('productQuantity')}" th:errors="*{productQuantity}"
                    class="invalid-feedback"></p>

@@ -35,6 +35,7 @@
                        placeholder="Enter Price"
                        name="productPrice"
                        th:errorClass="is-invalid"
+                       required
                 >
                 <p th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}"
                    class="invalid-feedback"></p>
@@ -47,6 +48,7 @@
                        placeholder="Quantity"
                        name="productQuantity"
                        th:errorClass="is-invalid"
+                       required
                 >
                 <p th:if="${#fields.hasErrors('productQuantity')}" th:errors="*{productQuantity}"
                    class="invalid-feedback"></p>
